@@ -5,12 +5,12 @@ from typing import Annotated
 from data.database import engine,SessionLocal
 from data.models import Base
 from sqlalchemy.orm import Session 
-from routers import users
+from routers import contacts, users
 
 app = FastAPI()
 
-def create_db():
- Base.metadata.create_all(bind=engine)
+def create_db:
+  Base.metadata.create_all(bind=engine)
 
 def get_db():
     db=SessionLocal()
@@ -32,6 +32,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(contacts.router, prefix="/contacts", tags=["Contacts"])
 app.include_router(users.router, prefix="/users", tags=["Users"])
 
 @app.get("/health" ,tags=['Health'])
