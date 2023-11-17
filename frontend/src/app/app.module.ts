@@ -13,11 +13,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MessagesModule } from 'primeng/messages';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginComponent } from './login/login.component';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +32,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ButtonModule,
     TableModule,
     FormsModule,
-    MessagesModule
+    MessagesModule,
+    MessageModule
+  
     
   ],
   providers: [MessageService],
