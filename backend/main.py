@@ -8,7 +8,9 @@ from sqlalchemy.orm import Session
 from routers import users
 
 app = FastAPI()
-Base.metadata.create_all(bind=engine)
+
+def create_db():
+ Base.metadata.create_all(bind=engine)
 
 def get_db():
     db=SessionLocal()
