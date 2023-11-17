@@ -9,7 +9,7 @@ from routers import contacts, users
 
 app = FastAPI()
 
-def create_db:
+def create_db():
   Base.metadata.create_all(bind=engine)
 
 def get_db():
