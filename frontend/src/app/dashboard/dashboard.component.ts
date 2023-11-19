@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
+import { AuthService } from '../Services/auth.service';
 
 
 @Component({
@@ -13,8 +14,11 @@ export class DashboardComponent implements OnInit {
   userProfile: MenuItem[]  | undefined;
   
 
-  constructor() { }
- 
+  constructor(private auth:AuthService) { }
+  logOut()
+   {
+     this.auth.logout();
+   }
   ngOnInit() {
     this.userProfile = [
       {

@@ -15,12 +15,17 @@ import { MessagesModule } from 'primeng/messages';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { MessageModule } from 'primeng/message';
-
+import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts-directory.component';
+import { CreateContactComponent } from './create-contact/create-contact.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputMaskModule } from 'primeng/inputmask';
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    ContactsDirectoryComponent,
+    CreateContactComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,9 @@ import { MessageModule } from 'primeng/message';
     TableModule,
     FormsModule,
     MessagesModule,
-    MessageModule
+    MessageModule,
+    InputTextModule,
+    InputMaskModule
   
     
   ],

@@ -1,16 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts-directory.component';
+import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GuardService } from './Services/guard.service';
-import { LoginComponent } from './login/login.component';
-
+import { CreateContactComponent } from './create-contact/create-contact.component';
 
 const routes: Routes = [
   { 
     path: 'dashboard', 
     component: DashboardComponent, 
     canActivate: [GuardService], 
- 
+    children: [
+      { path: 'contacts', component: ContactsDirectoryComponent,canActivate: [GuardService] },
+      { path: 'new-contact', component: CreateContactComponent,canActivate: [GuardService] }
+    ]
   },
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
