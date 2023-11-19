@@ -15,12 +15,14 @@ import { MessagesModule } from 'primeng/messages';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { MessageModule } from 'primeng/message';
+import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts-directory.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    LoginComponent
+    LoginComponent,
+    ContactsDirectoryComponent,
   ],
   imports: [
     BrowserModule,

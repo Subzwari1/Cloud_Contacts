@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GuardService } from './Services/guard.service';
 import { LoginComponent } from './login/login.component';
+import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts-directory.component';
 
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
     canActivate: [GuardService], 
  
   },
+  { path: 'contacts', component: ContactsDirectoryComponent,canActivate:[GuardService] },
   { path: 'login', component: LoginComponent },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
 ];
