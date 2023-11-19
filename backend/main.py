@@ -42,4 +42,3 @@ async def check_health():
 @app.get("/contacts" ,tags=['Contacts'])
 async def get_contacts(db:db_dependency):
     return db.query(models.Contact).all()
-
