@@ -20,3 +20,10 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
    db.commit()
    db.refresh(contact)
    return contact
+
+
+@router.get("/{user_id}" ,tags=['Contacts'])
+async def get_contacts(user_id: int,db: Session = Depends(get_db)):
+    contacts = db.query(Contact).filter(Contact.user_id == user_id).all()
+    return contacts
+
