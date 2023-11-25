@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
 import { Contact } from 'src/app/Dtos/Contact';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ContactService } from 'src/app/Services/contact.service';
@@ -11,8 +12,8 @@ import { ContactService } from 'src/app/Services/contact.service';
 })
 export class ContactsDirectoryComponent {
 
-  users: Array<Contact> = [];
-
+  users: Contact[] = [];
+  searchInput:string=''
   constructor(private contactsService:ContactService,
     private authService:AuthService) { }
 
@@ -22,4 +23,10 @@ export class ContactsDirectoryComponent {
     this.contactsService.getContacts(parseInt(id))
     .subscribe(response=>{this.users=response; console.log(response)});
   }
+
+  clear(table: Table) {
+    this.searchInput = '';
+    table.clear();
+  }
+  
 }
