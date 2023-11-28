@@ -1,10 +1,10 @@
+
 <p-table  #dt1 [value]="users" 
 [tableStyle]="{ 'min-width': '50rem' }"
 dataKey="id"
 [globalFilterFields]="['first_name', 'last_name','email','phone_number']"
 
 >
-
 <ng-template pTemplate="caption">
     <div  style="display:flex;justify-content: space-between;">
         <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
@@ -30,8 +30,8 @@ dataKey="id"
          <td>{{ user.email }}</td>
          <td>{{ user.phone_number}}</td>
          <td>
-            <i class="pi pi-pencil actions" style="margin-right: 10px; color:black;"></i>
-            <i class="pi pi-trash actions" style="color: red" (click)="passToTrash(user.id)"></i> 
+            <i class="pi pi-trash actions" style="color: red ;margin-right:10px;" (click)="delete(user.id)"></i> 
+            <i class="pi pi-undo actions" style="color: green" (click)="recover(user.id)"> </i>
         </td>
      </tr>
  </ng-template>

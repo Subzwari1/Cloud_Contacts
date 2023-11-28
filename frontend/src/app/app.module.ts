@@ -19,13 +19,15 @@ import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts
 import { CreateContactComponent } from './create-contact/create-contact.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
+import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LoginComponent,
     ContactsDirectoryComponent,
-    CreateContactComponent
+    CreateContactComponent,
+    TrashDirectoryComponent
   ],
   imports: [
     BrowserModule,
