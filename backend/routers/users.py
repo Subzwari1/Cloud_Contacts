@@ -41,7 +41,7 @@ async def register(user_data: UserRegister, db: Session = Depends(get_db)):   # 
         return {"error": str(ve)}
     
 
-@router.post("/login" ,tags=['Users'])
+@router.post("/login" ,tags=['users'])
 async def login(user:UserBase,db: Session = Depends(get_db)):
    result= db.query(UserModel).filter(UserModel.username==user.username,UserModel.password==user.password).first()
    if result:
