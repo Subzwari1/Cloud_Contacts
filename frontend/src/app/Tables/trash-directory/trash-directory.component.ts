@@ -1,5 +1,4 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Table } from 'primeng/table';
 import { Contact } from 'src/app/Dtos/Contact';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -7,12 +6,12 @@ import { ContactService } from 'src/app/Services/contact.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-contacts-directory',
-  templateUrl: './contacts-directory.component.html',
-  styleUrls: ['./contacts-directory.component.css']
+  selector: 'app-trash-directory',
+  templateUrl: './trash-directory.component.html',
+  styleUrls: ['./trash-directory.component.css']
 })
-export class ContactsDirectoryComponent {
-
+export class TrashDirectoryComponent {
+  
   users: Contact[] = [];
   searchInput:string=''
   constructor(private contactsService:ContactService,
@@ -29,25 +28,47 @@ export class ContactsDirectoryComponent {
     this.searchInput = '';
     table.clear();
   }
-  passToTrash(id:number)
+
+  recover(id:number)
   {
     Swal.fire({
-      title: "Are you sure you want delete the contact?",
-      text: "This contact will be move it to the trash can in case you want to revert it",
+      title: "Are you sure you want to recover the contact?",
+      text: "This contact will be move it to your directory",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, move to trash!"
+      confirmButtonText: "Yes, recover it!"
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Deleted!",
-          text: "Your contact has been moved to the trash can .",
+          title: "Recovered!",
+          text: "Your contact has been recovered.",
           icon: "success"
         });
       }
     });
   }
-  
+
+
+  delete(id:number)
+  {
+    Swal.fire({
+      title: "Are you sure you want delete the contact?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your contact has been deleted.",
+          icon: "success"
+        });
+      }
+    });
+  }
 }
