@@ -18,18 +18,21 @@ export class TrashDirectoryComponent {
     private authService:AuthService) { }
 
   ngOnInit() {
+   this.getContacts()
+  }
+  getContacts()
+  {
     const id = this.authService.getLoginInfo();
     if (id)
-    this.contactsService.getContacts(parseInt(id))
-    .subscribe(response=>{this.users=response; console.log(response)});
+    this.contactsService.getTrashContacts(parseInt(id))
+    .subscribe(response=>{this.users=response;});
   }
-
   clear(table: Table) {
     this.searchInput = '';
     table.clear();
   }
 
-  recover(id:number)
+  recover(contactId:number)
   {
     Swal.fire({
       title: "Are you sure you want to recover the contact?",
@@ -41,17 +44,27 @@ export class TrashDirectoryComponent {
       confirmButtonText: "Yes, recover it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Recovered!",
-          text: "Your contact has been recovered.",
-          icon: "success"
-        });
+        const userId = this.authService.getLoginInfo();
+        if (userId)
+        this.contactsService.recoverContactFromTrash(parseInt(userId),contactId)
+        .subscribe(response=>{
+          this.contactsService.getTrashContacts(parseInt(userId))
+          .subscribe(response=>{
+            this.users=response;
+            Swal.fire({
+              title: "Recovered!",
+              text: "Your contact has been recovered.",
+              icon: "success"
+            });
+          });
+        })
+        
       }
     });
   }
 
 
-  delete(id:number)
+  delete(contactId:number)
   {
     Swal.fire({
       title: "Are you sure you want delete the contact?",
@@ -63,11 +76,22 @@ export class TrashDirectoryComponent {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your contact has been deleted.",
-          icon: "success"
-        });
+        const userId = this.authService.getLoginInfo();
+        if (userId)
+        this.contactsService.deleteContact(parseInt(userId),contactId)
+        .subscribe(response=>{
+          this.contactsService.getTrashContacts(parseInt(userId))
+          .subscribe(response=>{
+            this.users=response;
+            Swal.fire({
+              title: "Deleted!",
+              text: "Your contact has been deleted.",
+              icon: "success"
+            });
+          });
+        })
+       
+        
       }
     });
   }

@@ -19,6 +19,10 @@ export class ContactsDirectoryComponent {
     private authService:AuthService) { }
 
   ngOnInit() {
+    this.getContacts();
+  }
+  getContacts()
+  {
     const id = this.authService.getLoginInfo();
     if (id)
     this.contactsService.getContacts(parseInt(id))
@@ -29,7 +33,7 @@ export class ContactsDirectoryComponent {
     this.searchInput = '';
     table.clear();
   }
-  passToTrash(id:number)
+  passToTrash(contactId:number)
   {
     Swal.fire({
       title: "Are you sure you want delete the contact?",
@@ -41,11 +45,19 @@ export class ContactsDirectoryComponent {
       confirmButtonText: "Yes, move to trash!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your contact has been moved to the trash can .",
-          icon: "success"
-        });
+       const userId = this.authService.getLoginInfo();
+        if (userId)
+        this.contactsService.moveContactToTrash(parseInt(userId),contactId)
+      .subscribe(response=>{
+        this.contactsService.getContacts(parseInt(userId))
+        .subscribe(response=>{this.users=response; });
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your contact has been moved to the trash can .",
+            icon: "success"
+          });
+      })
+        
       }
     });
   }
