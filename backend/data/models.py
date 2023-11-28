@@ -2,13 +2,14 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from data.database import Base
 
-class User(Base):
-   __tablename__='users'
+class UserModel(Base):                   # changing user table's class name as UserModel
+   __tablename__='Users'
 
-   id=Column(Integer,primary_key=True,index=True)
-   username=Column(String(50),unique=True)
-   password=Column(String(50))
- 
+   id       =  Column(Integer,primary_key=True,index=True)
+   username =  Column(String(50),unique=True, index=True)
+   email    =  Column(String(50),unique=True, index=True)
+   password =  Column(String(50))
+   
 
 class Contact(Base):
    __tablename__='contacts'
@@ -19,4 +20,5 @@ class Contact(Base):
    last_name=Column(String(50))
    email=Column(String(50))
    phone_number=Column(String(50))
+   
   
