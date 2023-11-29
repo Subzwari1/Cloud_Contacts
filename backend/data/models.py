@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
 from data.database import Base
 
 class User(Base):
@@ -19,4 +19,6 @@ class Contact(Base):
    last_name=Column(String(50))
    email=Column(String(50))
    phone_number=Column(String(50))
+   active=Column(Boolean, default=True)
+
   
