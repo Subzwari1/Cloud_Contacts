@@ -37,7 +37,7 @@ async def move_to_trash(user_id: int, id: int,db: Session = Depends(get_db)):
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active == False:
-        raise HTTPException(status_code=201, detail="this Contact is already in your trash")
+        raise HTTPException(status_code=400, detail="this Contact is already in your trash")
    else:
        contact.active = False
        db.commit()
@@ -50,7 +50,7 @@ async def Recover_from_trash(user_id: int, id: int,db: Session = Depends(get_db)
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active==True:
-       raise HTTPException(status_code=201, detail="already recovered ")
+       raise HTTPException(status_code=400, detail="already recovered ")
    else:
        contact.active = True
        db.commit()
@@ -63,7 +63,7 @@ async def permanent_delete(user_id: int, id: int,db: Session = Depends(get_db)):
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active == True:
-        raise HTTPException(status_code=201, detail="Move it to trash first ")
+        raise HTTPException(status_code=400, detail="Move it to trash first ")
    else:
        db.delete(contact)
        db.commit()
