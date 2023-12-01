@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">	<section class="register">
+  <div class="register_box">
+    <div class="left">
+      <div class="top_link"></div>
+      <div class="contact">
+<form (ngSubmit)="onSubmit()" #registrationForm="ngForm">
+  <h3 style="color: blue">User Registration</h3>
+  <div class="form-group">
+    <label for="username">User name:</label>
+    <input type="text" id="username" name="username" class="form-control" [(ngModel)]="user.username" required>
+    <div *ngIf="registrationForm.controls['username'].invalid && (registrationForm.controls['username'].dirty || registrationForm.controls['username'].touched)" style="color: red;">
+      User name  is required
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="user.email" required email>
+    
+    <div *ngIf="registrationForm.controls['email'].invalid && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)"style="color: red;">
+      Email is required</div>
+      <div *ngIf="registrationForm.controls['email'].errors">Invalid email format.</div>
+  </div>
+   <div>  
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required minlength="5" [(ngModel)]="user.password">
+    <div *ngIf="registrationForm.controls['password'].touched && registrationForm.controls['password'].errors?.['required']" style="color: red;">
+      Password is required.
+    </div>
+    <div *ngIf="registrationForm.controls['password'].hasError('minlength') && registrationForm.controls['password'].touched" style="color: red;">
+      too short password.
+    </div>
+  </div>
+  <div>
+    <label for="confirmPassword">Confirm Password:</label>
+    <input type="password" id="confirmPassword" name="confirmPassword" required [(ngModel)]="user.confirmPassword" #confirmPassword="ngModel" [ngModelOptions]="{ standalone: false }">
+    <div *ngIf="registrationForm.controls['confirmPassword'].touched && registrationForm.controls['confirmPassword'].hasError('required')" style="color: red;">
+    </div>
+    <div *ngIf="user.password!=user.confirmPassword && registrationForm.controls['confirmPassword'].touched" >
+     <p style="color: red;"> Passwords do not match</p>
+    </div>
+  </div>
+  <button type="submit" [disabled]="registrationForm.invalid" style="display: block; margin: 20px auto;">Register</button>
+</form>
+</div>
+</div>
+<div class="right">
+  <div class="right-text">
+    <h2>Every new friend is an adventure</h2>
+    <h5>Lets connect!</h5>
+  </div>
+  <div class="right-inductor"><img src="https://lh3.googleusercontent.com/fife/ABSRlIoGiXn2r0SBm7bjFHea6iCUOyY0N2SrvhNUT-orJfyGNRSMO2vfqar3R-xs5Z4xbeqYwrEMq2FXKGXm-l_H6QAlwCBk9uceKBfG-FjacfftM0WM_aoUC_oxRSXXYspQE3tCMHGvMBlb2K1NAdU6qWv3VAQAPdCo8VwTgdnyWv08CmeZ8hX_6Ty8FzetXYKnfXb0CTEFQOVF4p3R58LksVUd73FU6564OsrJt918LPEwqIPAPQ4dMgiH73sgLXnDndUDCdLSDHMSirr4uUaqbiWQq-X1SNdkh-3jzjhW4keeNt1TgQHSrzW3maYO3ryueQzYoMEhts8MP8HH5gs2NkCar9cr_guunglU7Zqaede4cLFhsCZWBLVHY4cKHgk8SzfH_0Rn3St2AQen9MaiT38L5QXsaq6zFMuGiT8M2Md50eS0JdRTdlWLJApbgAUqI3zltUXce-MaCrDtp_UiI6x3IR4fEZiCo0XDyoAesFjXZg9cIuSsLTiKkSAGzzledJU3crgSHjAIycQN2PH2_dBIa3ibAJLphqq6zLh0qiQn_dHh83ru2y7MgxRU85ithgjdIk3PgplREbW9_PLv5j9juYc1WXFNW9ML80UlTaC9D2rP3i80zESJJY56faKsA5GVCIFiUtc3EewSM_C0bkJSMiobIWiXFz7pMcadgZlweUdjBcjvaepHBe8wou0ZtDM9TKom0hs_nx_AKy0dnXGNWI1qftTjAg=w1920-h979-ft" alt=""></div>
+</div>
+</div>
+</section>
+

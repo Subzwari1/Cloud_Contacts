@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GuardService } from './Services/guard.service';
 import { CreateContactComponent } from './create-contact/create-contact.component';
+import { RegistrationComponent } from './registration/registration.component';
 
 const routes: Routes = [
   { 
@@ -17,7 +18,8 @@ const routes: Routes = [
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
+ { path: 'registration', component: RegistrationComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },// Default route
 ];
 
 @NgModule({

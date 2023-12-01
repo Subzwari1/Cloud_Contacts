@@ -1,15 +1,15 @@
 img{
 	width: 100%;
 }
-.login {
+.register{
     height: 1000px;
     width: 100%;
     background: #508bfc;
     position: relative;
 }
-.login_box {
+.register_box {
   width: 1050px;
-  height: 600px;
+  height: 700px;
   position: absolute;
   top: 5%; /* Move the login box higher on the page */
   left: 50%;
@@ -20,13 +20,13 @@ img{
   display: flex;
   overflow: hidden;
 }
-.login_box .left{
+.register_box.left{
   width: 41%;
   height: 100%;
   padding: 25px 25px;
   
 }
-.login_box .right{
+.register_box.right{
   width: 59%;
   height: 100%  
 }
@@ -42,7 +42,6 @@ img{
     align-items: center;
     justify-content: center;
     align-self: center;
-    height: 100%;
     width: 73%;
     margin: auto;
 }
