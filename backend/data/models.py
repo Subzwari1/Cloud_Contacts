@@ -20,5 +20,3 @@ class Contact(Base):
    email=Column(String(50))
    phone_number=Column(String(50))
    active=Column(Boolean, default=True)
-
-  
