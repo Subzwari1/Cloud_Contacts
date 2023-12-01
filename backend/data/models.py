@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
 from data.database import Base
 
 class User(Base):
@@ -7,6 +7,7 @@ class User(Base):
 
    id=Column(Integer,primary_key=True,index=True)
    username=Column(String(50),unique=True)
+   email=Column(String(50),unique=True)
    password=Column(String(50))
  
 
@@ -19,4 +20,6 @@ class Contact(Base):
    last_name=Column(String(50))
    email=Column(String(50))
    phone_number=Column(String(50))
-  
+   phone_number2=Column(String(50),nullable=True)
+   phone_number3=Column(String(50),nullable=True)
+   active=Column(Boolean, default=True)
