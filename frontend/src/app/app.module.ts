@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuModule } from 'primeng/menu';
@@ -19,13 +18,15 @@ import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts
 import { CreateContactComponent } from './create-contact/create-contact.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
+import { RegistrationComponent } from './registration/registration.component';
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     LoginComponent,
     ContactsDirectoryComponent,
-    CreateContactComponent
+    CreateContactComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -41,8 +42,6 @@ import { InputMaskModule } from 'primeng/inputmask';
     MessageModule,
     InputTextModule,
     InputMaskModule
-  
-    
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]
