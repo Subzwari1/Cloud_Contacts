@@ -9,8 +9,8 @@ from routers import contacts, users
 from data import models                #ye line add kari hey
 app = FastAPI()
 
-def create_db():
-  Base.metadata.create_all(bind=engine)
+
+Base.metadata.create_all(bind=engine)
 
 def get_db():
     db=SessionLocal()
@@ -39,6 +39,4 @@ app.include_router(users.router, prefix="/users", tags=["Users"])
 async def check_health():
     return {"Hello": "World"}
 
-@app.get("/contacts" ,tags=['Contacts'])
-async def get_contacts(db:db_dependency):
-    return db.query(models.Contact).all()
+

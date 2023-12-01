@@ -10,7 +10,7 @@
         height="125"
         >
         </div>
-      
+        <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Save" (click)="addContact(contactForm)"></button>
     </div>
     <form style="margin-left: 0px;" #contactForm="ngForm">
     <div class="row">
@@ -55,13 +55,15 @@
          <div  class="row">
             <div class="p-field">
                 <label for="phoneNumber">Phone Number</label>
-                <div class="p-inputgroup">
+                <div class="p-inputgroup" >
                   <span class="p-inputgroup-addon">
                     <i class="pi pi-phone"></i>
                   </span>
-                  <input [pattern]="phoneNumberPattern"  pInputText placeholder="Phone Number" [(ngModel)]="contact.phone_number" name="phoneNumber" required>
-               
-
+                  <input 
+                  [pattern]="phoneNumberPattern" 
+                  pInputText placeholder="Phone Number" 
+                  [(ngModel)]="contact.phone_number"
+                   name="phoneNumber" required>
                 </div>
                 <p-message 
                 *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].errors?.['required']"
@@ -74,7 +76,7 @@
                 severity="error"
                 [style]="{'width':'480px','margin-top': '20px', 'display': 'block'}"
                 text="Invalid phone number format. It should be 10 digits.">
-     </p-message>
+                </p-message>
               </div>
               
               <div class="p-field">
@@ -97,19 +99,65 @@
                 severity="error"
                 [style]="{'width':'480px','margin-top': '5px', 'display': 'block'}"
                 text="Invalid email format.">
-     </p-message>
+                </p-message>
                
               </div>
 
          </div> 
-         <div class="row">
-           
+         <div *ngFor="let phoneNumber of phoneNumbers; let i = index;trackBy: trackByFn">
+          <div class="row" >
+            <div class="p-field">
+              <label for="phoneNumber">Phone Number</label>
+              <div class="p-inputgroup">
+                <span class="p-inputgroup-addon">
+                  <i class="pi pi-phone"></i>
+                </span>
+                <input [pattern]="phoneNumberPattern" 
+                        pInputText placeholder="Phone Number" 
+                        [(ngModel)]="phoneNumbers[i]"
+                        name="phone_numbers{{ i }}"
+                        #phoneInput="ngModel"
+                        required
+                        name="phoneNumbers{{ i }}"
+                        id="phoneNumbers{{ i }}">
+                <i class="pi pi-times" 
+                   (click)="deletePhoneNumber(i)"
 
-           
+                   style=" cursor: pointer;font-size: 2.8rem; margin-left:5px; color:red;text-align: center;"></i>
+              </div>
+          
+              <p-message
+              *ngIf="phoneInput.touched && phoneInput.hasError('required')"
+              severity="error"
+              [style]="{ 'width': '490px', 'margin-top': '20px', 'display': 'inline-block' }"
+              text="Phone number is required"
+            ></p-message>
+      
+            <p-message
+              *ngIf="phoneInput.touched && phoneInput.hasError('pattern')"
+              severity="error"
+              [style]="{ 'width': '480px', 'margin-top': '20px', 'display': 'block' }"
+              text="Invalid phone number format. It should be 10 digits."
+            ></p-message>
+            </div>
+          </div>
+         </div>
+         
+         <div class="row">
+          <p-button label="Add Phone"
+               [rounded]="true" 
+               [outlined]="true" 
+               icon="pi pi-plus" 
+               [style]="{'width':'490px','margin-left':'15px', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center','font-size':'15px'}"
+               [text]="true" 
+               [raised]="true" 
+               (onClick)="addPhoneNumber()"></p-button>
+
+         
          </div>
           
           
-      <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Save" (click)="addContact(contactForm)"></button>
+     
     </form>
     <p-messages [value]="messages" [style]="{'font-size':'12px'}"></p-messages>
   </div>

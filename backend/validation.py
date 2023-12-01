@@ -8,12 +8,11 @@ def validate_user_registration(user_data : UserRegister):
     username = user_data.username
     email = user_data.email
 
-    if ' ' not in username:
-        raise ValueError('username must contain a space')
-        return username.title()
+    if ' ' in username:
+        raise ValueError('username must not contain a space')
 
     #Email logic defined here
-    if not email.endswith('@example.com'):
+    if  email.endswith('@example.com'):
         raise ValueError("Invalid email domain")
      
     return True

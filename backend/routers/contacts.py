@@ -15,7 +15,13 @@ def get_db():
 
 @router.post("" ,status_code=status.HTTP_201_CREATED,tags=['Contacts'])
 async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
-   contact=Contact(first_name=contact.first_name,last_name=contact.last_name,phone_number=contact.phone_number,email=contact.email,user_id=contact.user_id)
+   contact=Contact(first_name=contact.first_name,
+                   last_name=contact.last_name,
+                   phone_number=contact.phone_number,
+                   phone_number2=contact.phone_number2,
+                   phone_number3=contact.phone_number3,
+                   email=contact.email,
+                   user_id=contact.user_id)
    db.add(contact)
    db.commit()
    db.refresh(contact)

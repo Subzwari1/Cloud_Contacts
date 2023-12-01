@@ -7,7 +7,31 @@ from main import app
 
 client = TestClient(app)
 
+def test_create_contact_with_3_phone_numbers(mock_db_session: MagicMock):
+    url="/contacts"
+    contact={"first_name":"Giovanni",
+             "last_name":"Rossi",
+             "email":"giovanni@gmail.com",
+             "phone_number":"1234567890" ,
+             "phone_number2":"0234567890" ,
+             "phone_number3":"5234567890" ,
+             "user_id":1
+             }
 
+    response = client.post(url, json=contact)
+
+    assert response.status_code == 201
+    data = response.json()
+    assert data["first_name"] == "Giovanni"
+    assert data["last_name"] == "Rossi"
+    assert data["phone_number"] == "1234567890"
+    assert data["phone_number2"] == "0234567890"
+    assert data["phone_number3"] == "5234567890"
+    assert data["email"] == "giovanni@gmail.com"
+
+    mock_db_session.add.assert_called()
+    mock_db_session.commit.assert_called()
+    mock_db_session.refresh.assert_called()
 
 def test_create_contact(mock_db_session: MagicMock):
     url="/contacts"
