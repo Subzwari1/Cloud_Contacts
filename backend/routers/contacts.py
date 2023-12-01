@@ -75,3 +75,20 @@ async def permanent_delete(user_id: int, id: int,db: Session = Depends(get_db)):
        db.commit()
        db.close()
        return {"message": "Contact deleted permanently"}
+   
+
+@router.put("/edit/{id}" ,tags=['Contacts'])
+def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(get_db)):
+    contact=db.query(Contact).filter(Contact.id==id).first()
+    if not contact:
+        raise HTTPException(status_code=404, detail="Contact not found")
+    contact.first_name=contact_update.first_name
+    contact.last_name=contact_update.last_name
+    contact.phone_number=contact_update.phone_number
+    contact.phone_number2=contact_update.phone_number2
+    contact.phone_number3=contact_update.phone_number3
+    contact.email=contact_update.email
+    db.commit()
+    db.refresh(contact)
+    db.close()
+    return contact
