@@ -31,7 +31,7 @@ export class ContactService {
     return this.http.put(`http://localhost:8000/contacts/recover/${user_id}/${contactId}`,null);
   }
   deleteContact(user_id:number,contactId:number) {
-    return this.http.delete(`http://localhost:8000/contacts/hard/${user_id}/${contactId}`);
+    return this.http.delete(`http://localhost:8000p`);
   }
 
 

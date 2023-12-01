@@ -15,7 +15,13 @@ def get_db():
 
 @router.post("" ,status_code=status.HTTP_201_CREATED,tags=['Contacts'])
 async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
-   contact=Contact(first_name=contact.first_name,last_name=contact.last_name,phone_number=contact.phone_number,email=contact.email,user_id=contact.user_id)
+   contact=Contact(first_name=contact.first_name,
+                   last_name=contact.last_name,
+                   phone_number=contact.phone_number,
+                   phone_number2=contact.phone_number2,
+                   phone_number3=contact.phone_number3,
+                   email=contact.email,
+                   user_id=contact.user_id)
    db.add(contact)
    db.commit()
    db.refresh(contact)
@@ -37,7 +43,7 @@ async def move_to_trash(user_id: int, id: int,db: Session = Depends(get_db)):
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active == False:
-        raise HTTPException(status_code=201, detail="this Contact is already in your trash")
+        raise HTTPException(status_code=400, detail="this Contact is already in your trash")
    else:
        contact.active = False
        db.commit()
@@ -50,7 +56,7 @@ async def Recover_from_trash(user_id: int, id: int,db: Session = Depends(get_db)
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active==True:
-       raise HTTPException(status_code=201, detail="already recovered ")
+       raise HTTPException(status_code=400, detail="already recovered ")
    else:
        contact.active = True
        db.commit()
@@ -63,7 +69,7 @@ async def permanent_delete(user_id: int, id: int,db: Session = Depends(get_db)):
    if contact is None:
         raise HTTPException(status_code=404, detail="Contact not found")
    if contact.active == True:
-        raise HTTPException(status_code=201, detail="Move it to trash first ")
+        raise HTTPException(status_code=400, detail="Move it to trash first ")
    else:
        db.delete(contact)
        db.commit()
