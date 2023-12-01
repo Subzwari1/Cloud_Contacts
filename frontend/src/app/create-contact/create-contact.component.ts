@@ -62,6 +62,7 @@ export class CreateContactComponent  {
     const id=this.auth.getLoginInfo();
     if (id)
     this.contact.user_id=parseInt(id)
+    debugger;
     this.contact.phone_number2=this.phoneNumbers.length>0?this.phoneNumbers[0]:undefined
     this.contact.phone_number3=this.phoneNumbers.length>=1?this.phoneNumbers[1]:undefined
     this.contactService.addContact(this.contact)

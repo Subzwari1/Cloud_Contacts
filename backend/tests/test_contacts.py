@@ -7,7 +7,6 @@ from main import app
 
 client = TestClient(app)
 
-
 def test_create_contact_with_3_phone_numbers(mock_db_session: MagicMock):
     url="/contacts"
     contact={"first_name":"Giovanni",
