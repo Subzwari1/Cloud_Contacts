@@ -18,11 +18,8 @@ import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts
 import { CreateContactComponent } from './create-contact/create-contact.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
-<<<<<<< HEAD
 import { RegistrationComponent } from './registration/registration.component';
-=======
 import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
->>>>>>> 1515ba1df20f6db8f227353a052c189a162b6157
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,11 +27,8 @@ import { TrashDirectoryComponent } from './Tables/trash-directory/trash-director
     LoginComponent,
     ContactsDirectoryComponent,
     CreateContactComponent,
-<<<<<<< HEAD
+    TrashDirectoryComponent,
     RegistrationComponent
-=======
-    TrashDirectoryComponent
->>>>>>> 1515ba1df20f6db8f227353a052c189a162b6157
   ],
   imports: [
     BrowserModule,
