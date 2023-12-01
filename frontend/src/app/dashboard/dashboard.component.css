@@ -92,7 +92,9 @@ a {
   cursor: pointer;
 }
 
-
+.p-menuitem-link.active {
+  background-color: #e0e0e0; /* Change this to your desired background color */
+}
   
   
   
