@@ -10,7 +10,8 @@ from data import models                #ye line add kari hey
 app = FastAPI()
 
 
-Base.metadata.create_all(bind=engine)
+def create_db():
+    Base.metadata.create_all(bind=engine)
 
 def get_db():
     db=SessionLocal()
