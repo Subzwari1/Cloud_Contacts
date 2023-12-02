@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Message } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from '../Services/auth.service';
@@ -23,13 +23,16 @@ throw new Error('Method not implemented.');
  
 registration: any;
 userForm: any;
-constructor(private auth:AuthService,private router: Router) { }
+constructor(private auth:AuthService,
+            private router: Router,
+			private messageService: MessageService) { }
 
 onSubmit(): void {
   this.auth.registration(this.user)
     .subscribe(
       response => {
         console.log('registered successfully', response);
+		 this.messageService.add({ severity: 'success', summary: 'Success', detail: 'New user created' });
         this.router.navigate(['/login']);
         // Handle success - e.g., show success message, redirect, etc.
 
@@ -40,4 +43,9 @@ onSubmit(): void {
       }
     );
 }
+goToLogin()
+{
+  this.router.navigate(['/login'])
+}
+
 }
