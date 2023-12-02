@@ -1,6 +1,9 @@
 <!-- Your HTML code -->
 <div class="contact-container">
-    <!-- <h2>Add Contact</h2> -->
+    <i class="pi pi-arrow-left"
+    style="margin-left:10px;font-size: 1.5rem;color:gray;cursor:pointer"
+    (click)="goToContacts()" >
+   </i>
     <div class="image-container">
         <div>
             <img class="LrbNhc tUOMob"
@@ -10,7 +13,7 @@
         height="125"
         >
         </div>
-        <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Save" (click)="addContact(contactForm)"></button>
+        <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Edit contact" (click)="addContact(contactForm)"></button>
     </div>
     <form style="margin-left: 0px;" #contactForm="ngForm">
     <div class="row">

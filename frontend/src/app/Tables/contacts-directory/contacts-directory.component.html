@@ -30,8 +30,9 @@ dataKey="id"
          <td>{{ user.email }}</td>
          <td>{{ user.phone_number}}</td>
          <td>
-            <i class="pi pi-pencil actions" style="margin-right: 10px; color:black;"></i>
-            <i class="pi pi-trash actions" style="color: red" (click)="passToTrash(user.id)"></i> 
+            <i class="pi pi-eye actions" style="color: blue ;margin-right: 10px;" (click)="viewContact(user.id)"></i> 
+            <i class="pi pi-pencil actions" style="margin-right: 10px; color:black;" (click)="editContact(user.id)"></i>
+            <i class="pi pi-trash actions" style="color: red ;" (click)="passToTrash(user.id)"></i> 
         </td>
      </tr>
  </ng-template>

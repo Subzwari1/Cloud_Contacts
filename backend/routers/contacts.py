@@ -92,3 +92,8 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     db.refresh(contact)
     db.close()
     return contact
+
+@router.get("/{user_id}/{id}" ,tags=['Contacts'])
+async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session = Depends(get_db)):
+    contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.id==id,Contact.active==True).first()
+    return contacts

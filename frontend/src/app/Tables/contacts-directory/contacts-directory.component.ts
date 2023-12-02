@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { Contact } from 'src/app/Dtos/Contact';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -16,7 +17,7 @@ export class ContactsDirectoryComponent {
   users: Contact[] = [];
   searchInput:string=''
   constructor(private contactsService:ContactService,
-    private authService:AuthService) { }
+    private authService:AuthService,private router: Router) { }
 
   ngOnInit() {
     this.getContacts();
@@ -60,6 +61,16 @@ export class ContactsDirectoryComponent {
         
       }
     });
+  }
+
+  viewContact(contact_id:number)
+  {
+    this.router.navigate(['/dashboard/view-contact',contact_id]);
+  }
+
+  editContact(contact_id:number)
+  {
+    this.router.navigate(['/dashboard/edit-contact',contact_id]);
   }
   
 }
