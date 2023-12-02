@@ -15,11 +15,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { MessageModule } from 'primeng/message';
 import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts-directory.component';
-import { CreateContactComponent } from './create-contact/create-contact.component';
+import { CreateContactComponent } from './contact/create-contact/create-contact.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
 import { RegistrationComponent } from './registration/registration.component';
 import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
+import { ViewContactComponent } from './contact/view-contact/view-contact.component';
+import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +30,9 @@ import { TrashDirectoryComponent } from './Tables/trash-directory/trash-director
     ContactsDirectoryComponent,
     CreateContactComponent,
     TrashDirectoryComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    ViewContactComponent,
+    EditContactComponent
   ],
   imports: [
     BrowserModule,
