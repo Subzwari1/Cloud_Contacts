@@ -27,3 +27,44 @@ async def get_contacts(user_id: int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id).all()
     return contacts
 
+<<<<<<< HEAD
+=======
+@router.delete("/soft/{user_id}/{id}" ,tags=['Contacts'])
+async def move_to_trash(user_id: int, id: int,db: Session = Depends(get_db)):
+   contact= db.query(Contact).filter(Contact.user_id==user_id,Contact.id==id).first()
+   if contact is None:
+        raise HTTPException(status_code=404, detail="Contact not found")
+   if contact.active == False:
+        raise HTTPException(status_code=400, detail="this Contact is already in your trash")
+   else:
+       contact.active = False
+       db.commit()
+       db.close()
+       return {"message": "Contact moved to trash"}
+
+@router.put("/recover/{user_id}/{id}" ,tags=['Contacts'])
+async def Recover_from_trash(user_id: int, id: int,db: Session = Depends(get_db)):
+   contact= db.query(Contact).filter(Contact.user_id==user_id,Contact.id==id).first()
+   if contact is None:
+        raise HTTPException(status_code=404, detail="Contact not found")
+   if contact.active==True:
+       raise HTTPException(status_code=400, detail="already recovered ")
+   else:
+       contact.active = True
+       db.commit()
+       db.close()
+       return {"message": "Recovery successfull"}
+
+@router.delete("/hard/{user_id}/{id}" ,tags=['Contacts'])
+async def permanent_delete(user_id: int, id: int,db: Session = Depends(get_db)):
+   contact= db.query(Contact).filter(Contact.user_id==user_id,Contact.id==id).first()
+   if contact is None:
+        raise HTTPException(status_code=404, detail="Contact not found")
+   if contact.active == True:
+        raise HTTPException(status_code=400, detail="Move it to trash first ")
+   else:
+       db.delete(contact)
+       db.commit()
+       db.close()
+       return {"message": "Contact deleted permanently"}
+>>>>>>> fd1b381cf0fd62e26f9fb7ed15c6849fb5dd97df
