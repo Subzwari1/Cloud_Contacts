@@ -69,6 +69,7 @@ export class CreateContactComponent  {
     this.contactService.addContact(this.contact)
     .subscribe(response=>
      {
+      this.messages = [{ severity: 'success', summary: 'Contact added'}]; 
        contactForm.resetForm();
        this.phoneNumbers.splice(0,this.phoneNumbers.length)
      },(error: HttpErrorResponse) => {

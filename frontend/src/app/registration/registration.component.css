@@ -1,15 +1,15 @@
 img{
 	width: 100%;
 }
-.register{
+.login {
     height: 1000px;
     width: 100%;
     background: #508bfc;
     position: relative;
 }
-.register_box {
+.login_box {
   width: 1050px;
-  height: 700px;
+  height: 600px;
   position: absolute;
   top: 5%; /* Move the login box higher on the page */
   left: 50%;
@@ -20,13 +20,13 @@ img{
   display: flex;
   overflow: hidden;
 }
-.register_box.left{
+.login_box .left{
   width: 41%;
   height: 100%;
   padding: 25px 25px;
   
 }
-.register_box.right{
+.login_box .right{
   width: 59%;
   height: 100%  
 }
@@ -42,12 +42,12 @@ img{
     align-items: center;
     justify-content: center;
     align-self: center;
+    height: 100%;
     width: 73%;
     margin: auto;
 }
 .left h3{
   text-align: center;
-  margin-bottom: 40px;
 }
 .left input {
     border: none;
@@ -60,6 +60,7 @@ img{
     background: transparent;
     font-weight: 600;
     font-size: 14px;
+    width: 300px;
 }
 .left{
 	background: linear-gradient(-45deg, #dcd7e0, #fff);
@@ -70,7 +71,7 @@ img{
   border-radius: 8px;
   display: block;
   margin: auto;
-  margin-top: 120px;
+  margin-top: 50px;
   background: #E0E0E0; /* Neutral gray background */
   color: #333; /* Dark gray text color */
   font-weight: bold;
@@ -122,4 +123,18 @@ img{
     margin-top: -3px;
 }
 
+.form-group {
+  position: relative;
+  margin-bottom: 20px;
+}
 
+p-message {
+  position: absolute;
+  left:-50%;
+  top: 100%; /* Position the error message below the form control */
+}
+
+.error 
+{width:'550px';
+  margin-top: '-13px';
+}
