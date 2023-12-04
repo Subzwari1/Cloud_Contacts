@@ -19,8 +19,8 @@
 							  [style]="{'width':'400px'}"
 							  text="Password is required"></p-message>
 						  <p-messages [value]="messages" [style]="{'font-size':'12px'}"></p-messages>
-                        
-						<button class="submit" (click)="onSubmit(loginForm)" >LET'S GO</button>
+                          <button style="margin-bottom: 20px"class="submit" (click)="onSubmit(loginForm)"  >LET'S GO</button>
+						  <p  style="color: brown;text-align: center;">Not a member? <a routerLink="/registration">Register</a></p>
 					</form>
 				</div>
 			</div>
@@ -33,3 +33,4 @@
 			</div>
 		</div>
 	</section>
+	

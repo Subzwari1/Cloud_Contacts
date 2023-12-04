@@ -4,7 +4,11 @@ import { ContactsDirectoryComponent } from './Tables/contacts-directory/contacts
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { GuardService } from './Services/guard.service';
-import { CreateContactComponent } from './create-contact/create-contact.component';
+import { CreateContactComponent } from './contact/create-contact/create-contact.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
+import { ViewContactComponent } from './contact/view-contact/view-contact.component';
+import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
 
 const routes: Routes = [
   { 
@@ -13,11 +17,15 @@ const routes: Routes = [
     canActivate: [GuardService], 
     children: [
       { path: 'contacts', component: ContactsDirectoryComponent,canActivate: [GuardService] },
-      { path: 'new-contact', component: CreateContactComponent,canActivate: [GuardService] }
+      { path: 'new-contact', component: CreateContactComponent,canActivate: [GuardService] },
+      { path: 'trash', component: TrashDirectoryComponent,canActivate: [GuardService] },
+      { path: 'view-contact/:id', component: ViewContactComponent,canActivate: [GuardService] },
+      { path: 'edit-contact/:id', component: EditContactComponent,canActivate: [GuardService] }
     ]
   },
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' }, // Default route
+  { path: 'registration', component: RegistrationComponent },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },// Default route
 ];
 
 @NgModule({

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { User } from '../Dtos/User';
@@ -39,8 +38,8 @@ export class AuthService {
 
       getLoginInfo() {
         return localStorage.getItem("user") ;
+      }   
+      registration(user: any): Observable<any> {
+        return this.http.post<any>(`http://localhost:8000/users/register`, user);
       }
-
-    
-    
 }

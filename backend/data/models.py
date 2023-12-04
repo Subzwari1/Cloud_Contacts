@@ -20,4 +20,6 @@ class Contact(Base):
    last_name=Column(String(50))
    email=Column(String(50))
    phone_number=Column(String(50))
+   phone_number2=Column(String(50),nullable=True)
+   phone_number3=Column(String(50),nullable=True)
    active=Column(Boolean, default=True)
