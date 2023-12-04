@@ -26,4 +26,19 @@ export class ContactService {
   getContacts(user_id:number) {
     return this.http.get<Contact[]>(`http://localhost:8000/contacts/${user_id}`);
   }
+
+  getTrashContacts(user_id:number) {
+    return this.http.get<Contact[]>(`http://localhost:8000/contacts/trash/${user_id}`);
+  }
+
+  moveContactToTrash(user_id:number,contactId:number) {
+    return this.http.delete(`http://localhost:8000/contacts/soft/${user_id}/${contactId}`);
+  }
+
+  recoverContactFromTrash(user_id:number,contactId:number) {
+    return this.http.put(`http://localhost:8000/contacts/recover/${user_id}/${contactId}`,null);
+  }
+  deleteContact(user_id:number,contactId:number) {
+    return this.http.delete(`http://localhost:8000/contacts/hard/${user_id}/${contactId}`);
+  }
 }
