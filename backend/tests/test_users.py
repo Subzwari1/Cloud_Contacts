@@ -42,9 +42,22 @@ def test_login_incorrect_username_password():
     assert "detail" in response_json
     assert response_json["detail"] == "Username or password incorrect"
 
+def test_user_registration_success( ):
+    url = "/users/register"
+    user={"username":"Hasan",
+           "email":"Hasan@gmail.com",
+          "password":"password123"}
+    mock_db_session = MagicMock()
+    app.dependency_overrides[get_db] = lambda:mock_db_session
 
+    response = client.post(url, json=user)
+    assert response.status_code == 200
+    assert response.json() == {"message": "User registered successfully"}
 
- 
+    mock_db_session.add.assert_called()
+    mock_db_session.commit.assert_called()
+    mock_db_session.refresh.assert_called()
+
 
 
    
