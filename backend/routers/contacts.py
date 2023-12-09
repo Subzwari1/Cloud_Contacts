@@ -4,6 +4,10 @@ from typing import List
 from dtos.contact_base import ContactBase
 from data.models import Contact
 from data.database import SessionLocal
+import qrcode
+import io
+import base64
+
 router = APIRouter()
 
 def get_db():
@@ -97,3 +101,21 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
 async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.id==id,Contact.active==True).first()
     return contacts
+
+@router.post("/create/whatsapp/barcode" ,tags=['Contacts'])
+async def get_contacts_by_user_id_and_contact_id(phone_number:str,db: Session = Depends(get_db)):
+  if ('809' in phone_number):
+    phone_number= f"1{phone_number}"
+  else:
+    phone_number= f"39{phone_number}"
+  url= f"https://wa.me/{phone_number}"
+  data = url
+  img = qrcode.make(data)
+  # Convert  Image to bytes
+  
+    
+  img_byte_array = io.BytesIO()
+  img.save(img_byte_array, format='PNG')
+  img_byte_array = img_byte_array.getvalue()
+  base64_image = base64.b64encode(img_byte_array).decode('utf-8')
+  return base64_image
