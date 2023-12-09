@@ -7,4 +7,5 @@ export interface Contact{
     phone_number3?:string,
     last_name?:string
     user_id?:number
+    visible?:boolean
   }
