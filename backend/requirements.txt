@@ -7,3 +7,5 @@ fastapi==0.104.1
 httpx==0.25.1
 PyMySQL==1.1.0
 pydantic[email]
+qrcode==6.1
+
