@@ -111,9 +111,6 @@ async def get_contacts_by_user_id_and_contact_id(phone_number:str,db: Session = 
   url= f"https://wa.me/{phone_number}"
   data = url
   img = qrcode.make(data)
-  # Convert  Image to bytes
-  
-    
   img_byte_array = io.BytesIO()
   img.save(img_byte_array, format='PNG')
   img_byte_array = img_byte_array.getvalue()
