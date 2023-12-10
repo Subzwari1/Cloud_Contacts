@@ -19,7 +19,7 @@ def get_db():
         yield db
     finally:
         db.close()
-router.mount("/profile", StaticFiles(directory="profile"), name="profile")
+
 
 @router.put("/uploadprofile/{contactId}")
 async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
@@ -43,7 +43,7 @@ async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: S
     db.close()
     return "successfuly uploaded"
 
-@router.get("profile/{contactId}")
+@router.get("/profile/{contactId}")
 async def get_profile(contactId:int,db: Session = Depends(get_db)):
     contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
     file_path=contact.image_path
