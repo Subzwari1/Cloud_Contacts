@@ -1,4 +1,7 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+import base64
+from fastapi import APIRouter, Depends, Form, status, HTTPException, File, UploadFile
+import secrets
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
@@ -16,20 +19,63 @@ def get_db():
         yield db
     finally:
         db.close()
+router.mount("/profile", StaticFiles(directory="profile"), name="profile")
+
+@router.put("/uploadprofile/{contactId}")
+async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
+    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
+
+    filepath="./profile/images/"
+    file_name=file.filename
+    extension=file_name.split(".")[1]
+
+    if extension not in  ["jpg", "png", "jpeg"]:
+        return {"status": "error", "detail": "file extension not allowed"}
+    global_token_name=secrets.token_hex(10)+"."+extension
+    generated_name=filepath+global_token_name
+    file_content = await file.read()
+    with open(generated_name, "wb") as file:
+        file.write(file_content)
+    file.close()
+    contact.image_path=generated_name
+    db.commit()
+    db.refresh(contact)
+    db.close()
+    return "successfuly uploaded"
+
+@router.get("profile/{contactId}")
+async def get_profile(contactId:int,db: Session = Depends(get_db)):
+    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
+    file_path=contact.image_path
+    with open(file_path, "rb") as file:
+        binary_data=file.read()
+        image=base64.b64encode(binary_data).decode('utf-8')
+        return image
+
+
 
 @router.post("" ,status_code=status.HTTP_201_CREATED,tags=['Contacts'])
-async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
-   contact=Contact(first_name=contact.first_name,
-                   last_name=contact.last_name,
-                   phone_number=contact.phone_number,
-                   phone_number2=contact.phone_number2,
-                   phone_number3=contact.phone_number3,
-                   email=contact.email,
-                   user_id=contact.user_id)
-   db.add(contact)
-   db.commit()
-   db.refresh(contact)
-   return contact
+async def post_contact(contact:ContactBase , db: Session = Depends(get_db)):
+    try:
+       
+        # Database operations
+        contact_data = Contact(
+            first_name=contact.first_name,
+            last_name=contact.last_name,
+            phone_number=contact.phone_number,
+            phone_number2=contact.phone_number2,
+            phone_number3=contact.phone_number3,
+            email=contact.email,
+            user_id=contact.user_id
+        )
+
+        db.add(contact_data)
+        db.commit()
+        db.refresh(contact_data)
+
+        return contact_data
+    except HTTPException as e:
+        raise e  # Reraise HTTPException to return the proper HTTP response
 
 
 @router.get("/{user_id}" ,tags=['Contacts'])
@@ -92,6 +138,7 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     contact.phone_number2=contact_update.phone_number2
     contact.phone_number3=contact_update.phone_number3
     contact.email=contact_update.email
+    
     db.commit()
     db.refresh(contact)
     db.close()
