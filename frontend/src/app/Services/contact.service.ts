@@ -41,4 +41,8 @@ export class ContactService {
   deleteContact(user_id:number,contactId:number) {
     return this.http.delete(`http://localhost:8000/contacts/hard/${user_id}/${contactId}`);
   }
+
+  createBarCode(phoneNumber:string) {
+    return this.http.post<string>(`http://localhost:8000/contacts/create/whatsapp/barcode?phone_number=${phoneNumber}`,{});
+  }
 }
