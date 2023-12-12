@@ -1,15 +1,14 @@
-import base64
-from fastapi import APIRouter, Depends, Form, status, HTTPException, File, UploadFile
-import secrets
-from fastapi.staticfiles import StaticFiles
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
 from data.models import Contact
 from data.database import SessionLocal
-import qrcode
-import io
-import base64
+
+import csv
+from io import BytesIO
+from fastapi.responses import StreamingResponse
+from fastapi import Request, Response               # importing Request and Response classes for getting request from and giving response to client 
 
 router = APIRouter()
 
@@ -20,62 +19,19 @@ def get_db():
     finally:
         db.close()
 
-
-@router.put("/uploadprofile/{contactId}")
-async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
-    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
-
-    filepath="./profile/images/"
-    file_name=file.filename
-    extension=file_name.split(".")[1]
-
-    if extension not in  ["jpg", "png", "jpeg"]:
-        return {"status": "error", "detail": "file extension not allowed"}
-    global_token_name=secrets.token_hex(10)+"."+extension
-    generated_name=filepath+global_token_name
-    file_content = await file.read()
-    with open(generated_name, "wb") as file:
-        file.write(file_content)
-    file.close()
-    contact.image_path=generated_name
-    db.commit()
-    db.refresh(contact)
-    db.close()
-    return "successfuly uploaded"
-
-@router.get("/profile/{contactId}")
-async def get_profile(contactId:int,db: Session = Depends(get_db)):
-    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
-    file_path=contact.image_path
-    with open(file_path, "rb") as file:
-        binary_data=file.read()
-        image=base64.b64encode(binary_data).decode('utf-8')
-        return image
-
-
-
 @router.post("" ,status_code=status.HTTP_201_CREATED,tags=['Contacts'])
-async def post_contact(contact:ContactBase , db: Session = Depends(get_db)):
-    try:
-       
-        # Database operations
-        contact_data = Contact(
-            first_name=contact.first_name,
-            last_name=contact.last_name,
-            phone_number=contact.phone_number,
-            phone_number2=contact.phone_number2,
-            phone_number3=contact.phone_number3,
-            email=contact.email,
-            user_id=contact.user_id
-        )
-
-        db.add(contact_data)
-        db.commit()
-        db.refresh(contact_data)
-
-        return contact_data
-    except HTTPException as e:
-        raise e  # Reraise HTTPException to return the proper HTTP response
+async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
+   contact=Contact(first_name=contact.first_name,
+                   last_name=contact.last_name,
+                   phone_number=contact.phone_number,
+                   phone_number2=contact.phone_number2,
+                   phone_number3=contact.phone_number3,
+                   email=contact.email,
+                   user_id=contact.user_id)
+   db.add(contact)
+   db.commit()
+   db.refresh(contact)
+   return contact
 
 
 @router.get("/{user_id}" ,tags=['Contacts'])
@@ -138,7 +94,6 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     contact.phone_number2=contact_update.phone_number2
     contact.phone_number3=contact_update.phone_number3
     contact.email=contact_update.email
-    
     db.commit()
     db.refresh(contact)
     db.close()
@@ -149,17 +104,24 @@ async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.id==id,Contact.active==True).first()
     return contacts
 
-@router.post("/create/whatsapp/barcode" ,tags=['Contacts'])
-async def get_contacts_by_user_id_and_contact_id(phone_number:str,db: Session = Depends(get_db)):
-  if ('809' in phone_number):
-    phone_number= f"1{phone_number}"
-  else:
-    phone_number= f"39{phone_number}"
-  url= f"https://wa.me/{phone_number}"
-  data = url
-  img = qrcode.make(data)
-  img_byte_array = io.BytesIO()
-  img.save(img_byte_array, format='PNG')
-  img_byte_array = img_byte_array.getvalue()
-  base64_image = base64.b64encode(img_byte_array).decode('utf-8')
-  return base64_image
+
+@router.get("/download-contacts", tags=['downlaod contacts'])
+async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+
+    cursor = db.execute("SELECT * from Contact")
+    all_contactcs = cursor.fetchall()
+
+    #converting contacts into csv format
+    contacts_csv = BytesIO()                      # BytesIO object
+    csv_writer  = csv.writer(contacts_csv)        # csv.writer class is used to insert the data into csv file. User’s data is converted into a delimited string by the writer object returned by csv.writer()
+
+    for row in all_contactcs:
+        csv_writer.writerow(row)                  # writerow() method is used to write single row of data to csv file. 
+    
+    response = StreamingResponse(contacts_csv, media_type="applicaton/octet-stream")    #applicaton/octet-stream 
+    response.headers["Content disposition"] = "attachment; filename=contacts.csv"
+
+    return response
+    
+    
+
