@@ -4,6 +4,12 @@ from typing import List
 from dtos.contact_base import ContactBase
 from data.models import Contact
 from data.database import SessionLocal
+
+import csv
+from io import BytesIO
+from fastapi.responses import StreamingResponse
+from fastapi import Request, Response               # importing Request and Response classes for getting request from and giving response to client 
+
 router = APIRouter()
 
 def get_db():
@@ -97,3 +103,25 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
 async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.id==id,Contact.active==True).first()
     return contacts
+
+
+@router.get("/download-contacts", tags=['downlaod contacts'])
+async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+
+    cursor = db.execute("SELECT * from Contact")
+    all_contactcs = cursor.fetchall()
+
+    #converting contacts into csv format
+    contacts_csv = BytesIO()                      # BytesIO object
+    csv_writer  = csv.writer(contacts_csv)        # csv.writer class is used to insert the data into csv file. User’s data is converted into a delimited string by the writer object returned by csv.writer()
+
+    for row in all_contactcs:
+        csv_writer.writerow(row)                  # writerow() method is used to write single row of data to csv file. 
+    
+    response = StreamingResponse(contacts_csv, media_type="applicaton/octet-stream")    #applicaton/octet-stream 
+    response.headers["Content disposition"] = "attachment; filename=contacts.csv"
+
+    return response
+    
+    
+

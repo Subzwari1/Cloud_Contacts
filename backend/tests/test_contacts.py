@@ -357,4 +357,5 @@ def test_get_contact_user_id_and_contact_id(mock_db_session):
     }
 
 
-    
+def test_download_contacts(mock_db_session: MagicMock):
+
