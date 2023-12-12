@@ -37,14 +37,14 @@ export class DashboardComponent implements OnInit {
         routerLink: ['/dashboard/contacts']
       },
       {
-        label: 'Frequents',
-        icon: 'pi pi-shopping-cart',
-        routerLink: ['/products']
+        label: 'Trash',
+        icon: PrimeIcons.TRASH,
+        routerLink: ['/dashboard/trash']
       },
       {
-        label: 'Other Contacts',
-        icon: 'pi pi-info',
-        routerLink: ['/about']
+        label: 'Add to whatsapp',
+        icon: PrimeIcons.WHATSAPP,
+        routerLink: ['/dashboard/whatsapp']
       },
   
     ];

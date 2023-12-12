@@ -21,6 +21,13 @@ import { InputMaskModule } from 'primeng/inputmask';
 import { RegistrationComponent } from './registration/registration.component';
 import { ViewContactComponent } from './contact/view-contact/view-contact.component';
 import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
+import { QrcodeDirectoryComponent } from './Tables/qrcode-directory/qrcode-directory.component';
+import { WhatsappBarcodeGeneratorComponent } from './dialogs/whatsapp-barcode-generator/whatsapp-barcode-generator.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +37,9 @@ import { EditContactComponent } from './contact/edit-contact/edit-contact.compon
     CreateContactComponent,
     RegistrationComponent,
     ViewContactComponent,
-    EditContactComponent
+    EditContactComponent,
+    QrcodeDirectoryComponent,
+    WhatsappBarcodeGeneratorComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +54,10 @@ import { EditContactComponent } from './contact/edit-contact/edit-contact.compon
     MessagesModule,
     MessageModule,
     InputTextModule,
-    InputMaskModule
+    InputMaskModule,
+    DialogModule,
+    DropdownModule,
+    RadioButtonModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

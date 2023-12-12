@@ -356,6 +356,14 @@ def test_get_contact_user_id_and_contact_id(mock_db_session):
         "active": True
     }
 
+def test_create_whatsapp_barcode():
+    phone_number = "8091234567" 
+
+    response = client.post(
+        f"/contacts/create/whatsapp/barcode?phone_number={phone_number}"
+    )
+    assert response.status_code == 200
+
 
 def test_download_contacts(mock_db_session: MagicMock):
 
