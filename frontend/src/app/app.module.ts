@@ -27,6 +27,8 @@ import { WhatsappBarcodeGeneratorComponent } from './dialogs/whatsapp-barcode-ge
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { ShareContactsComponent } from './dialogs/share-contacts/share-contacts.component';
+import { FileUploadModule } from 'primeng/fileupload';
 
 
 @NgModule({
@@ -41,7 +43,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     ViewContactComponent,
     EditContactComponent,
     QrcodeDirectoryComponent,
-    WhatsappBarcodeGeneratorComponent
+    WhatsappBarcodeGeneratorComponent,
+    ShareContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputMaskModule,
     DialogModule,
     DropdownModule,
-    RadioButtonModule
+    RadioButtonModule,
+    FileUploadModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

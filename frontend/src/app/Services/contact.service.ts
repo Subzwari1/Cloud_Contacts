@@ -45,4 +45,11 @@ export class ContactService {
   createBarCode(phoneNumber:string) {
     return this.http.post<string>(`http://localhost:8000/contacts/create/whatsapp/barcode?phone_number=${phoneNumber}`,{});
   }
+
+  shareContact(contact_id:number,contacts_ids:number[]) {
+    debugger
+    const requestBody = { contacts: contacts_ids };
+    console.log("ids ", contacts_ids)
+    return this.http.post<string>(`http://localhost:8000/contacts/share/${contact_id}`,contacts_ids);
+  }
 }

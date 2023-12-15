@@ -7,6 +7,7 @@ from data.database import SessionLocal
 import qrcode
 import io
 import base64
+from sqlalchemy.orm import make_transient
 
 router = APIRouter()
 
@@ -35,7 +36,10 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
 @router.get("/{user_id}" ,tags=['Contacts'])
 async def get_contacts(user_id: int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.active==True).all()
+    print(user_id)
+    print(contacts)
     return contacts
+
 @router.get("/trash/{user_id}" ,tags=['Contacts'])
 async def get_contacts_intrash(user_id: int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id, Contact.active==False).all()
@@ -111,8 +115,39 @@ async def get_contacts_by_user_id_and_contact_id(phone_number:str,db: Session = 
   url= f"https://wa.me/{phone_number}"
   data = url
   img = qrcode.make(data)
+
   img_byte_array = io.BytesIO()
   img.save(img_byte_array, format='PNG')
   img_byte_array = img_byte_array.getvalue()
   base64_image = base64.b64encode(img_byte_array).decode('utf-8')
   return base64_image
+
+@router.post("/share/{contact_id}" ,tags=['Contacts'])
+async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depends(get_db)):
+  print("contact_id ",contact_id)
+  print("ids ",user_ids)
+  for user_id in user_ids:
+        contact = db.query(Contact).filter(Contact.id == contact_id).first()
+
+        if contact:
+            make_transient(contact)
+            new_contact = Contact(
+            user_id=user_id,
+            first_name=contact.first_name,
+            last_name=contact.last_name,
+            email=contact.email,
+            phone_number=contact.phone_number,
+            phone_number2=contact.phone_number2,
+            phone_number3=contact.phone_number3,
+            is_shared=True
+        )
+            db.add(new_contact)
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Contact with ID {user_id} not found",
+            )
+  db.commit()
+  db.close()
+  return "successfully shared!"
+  

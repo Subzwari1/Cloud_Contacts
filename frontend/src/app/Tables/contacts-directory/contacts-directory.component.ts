@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Table } from 'primeng/table';
+import { BehaviorSubject } from 'rxjs';
 import { Contact } from 'src/app/Dtos/Contact';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ContactService } from 'src/app/Services/contact.service';
@@ -13,13 +14,17 @@ import Swal from 'sweetalert2';
   styleUrls: ['./contacts-directory.component.css']
 })
 export class ContactsDirectoryComponent {
-
   users: Contact[] = [];
   searchInput:string=''
+  isShareDialogOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  contactName:string=""
+  contactId?:number;
   constructor(private contactsService:ContactService,
-    private authService:AuthService,private router: Router) { }
+              private authService:AuthService,
+              private router: Router) { }
 
   ngOnInit() {
+    
     this.getContacts();
   }
   getContacts()
@@ -72,5 +77,10 @@ export class ContactsDirectoryComponent {
   {
     this.router.navigate(['/dashboard/edit-contact',contact_id]);
   }
-  
+  openShareDialog(contact:Contact)
+  {
+    this.contactName=contact.first_name +" "+contact.last_name;
+    this.contactId=contact.id;
+    this.isShareDialogOpen.next(true);
+  }
 }

@@ -8,4 +8,5 @@ export interface Contact{
     last_name?:string
     user_id?:number
     visible?:boolean
+    is_shared?:boolean
   }
