@@ -30,10 +30,18 @@ dataKey="id"
          <td>{{ user.email }}</td>
          <td>{{ user.phone_number}}</td>
          <td>
+
             <i class="pi pi-eye actions" style="color: blue ;margin-right: 10px;" (click)="viewContact(user.id)"></i> 
             <i class="pi pi-pencil actions" style="margin-right: 10px; color:black;" (click)="editContact(user.id)"></i>
-            <i class="pi pi-trash actions" style="color: red ;" (click)="passToTrash(user.id)"></i> 
+            <i class="pi pi-trash actions" style="color: red ; margin-right: 10px;" (click)="passToTrash(user.id)"></i> 
+            <i  *ngIf="!user.is_shared" class="pi pi-share-alt actions" style="color: green ; " (click)="openShareDialog(user)"></i>
+            <i  *ngIf="user.is_shared" class="pi pi-globe actions" style="color: green ; "></i>
+            
+            
         </td>
      </tr>
+
  </ng-template>
 </p-table>
+<app-share-contacts [isOpen]="isShareDialogOpen" [contactName]="contactName" [contactId]="contactId"></app-share-contacts>
+

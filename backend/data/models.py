@@ -23,4 +23,5 @@ class Contact(Base):
    phone_number2=Column(String(50),nullable=True)
    phone_number3=Column(String(50),nullable=True)
    active=Column(Boolean, default=True)
+   is_shared=Column(Boolean,default=False)
    image_path=Column(String(100),nullable=True)

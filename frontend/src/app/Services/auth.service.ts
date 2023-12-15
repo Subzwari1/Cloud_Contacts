@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 import { User } from '../Dtos/User';
 import { Router } from '@angular/router';
+import { UserGet } from '../Dtos/UserGet';
 @Injectable({
   providedIn: 'root'
 })
@@ -41,5 +42,9 @@ export class AuthService {
       }   
       registration(user: any): Observable<any> {
         return this.http.post<any>(`http://localhost:8000/users/register`, user);
+      }
+
+      getUsers(userId:number): Observable<UserGet[]> {
+        return this.http.get<UserGet[]>(`http://localhost:8000/users/${userId}`);
       }
 }
