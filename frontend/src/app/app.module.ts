@@ -28,6 +28,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ShareContactsComponent } from './dialogs/share-contacts/share-contacts.component';
 import { FileUploadModule } from 'primeng/fileupload';
+import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { FileUploadModule } from 'primeng/fileupload';
     EditContactComponent,
     QrcodeDirectoryComponent,
     WhatsappBarcodeGeneratorComponent,
-    ShareContactsComponent
+    ShareContactsComponent,
+    TrashDirectoryComponent
   ],
   imports: [
     BrowserModule,

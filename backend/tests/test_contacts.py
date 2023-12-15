@@ -365,5 +365,4 @@ def test_create_whatsapp_barcode():
     assert response.status_code == 200
 
 
-def test_download_contacts(mock_db_session: MagicMock):
 
