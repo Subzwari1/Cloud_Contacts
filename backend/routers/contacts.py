@@ -9,6 +9,11 @@ import io
 import base64
 from sqlalchemy.orm import make_transient
 
+import csv
+from io import BytesIO
+from fastapi.responses import StreamingResponse
+from fastapi import Request, Response               # importing Request and Response classes for getting request from and giving response to client 
+
 router = APIRouter()
 
 def get_db():
@@ -151,3 +156,24 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
   db.close()
   return "successfully shared!"
   
+
+@router.get("/download-contacts", tags=['downlaod contacts'])
+async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+
+    cursor = db.execute("SELECT * from Contact")
+    all_contactcs = cursor.fetchall()
+
+    #converting contacts into csv format
+    contacts_csv = BytesIO()                      # BytesIO object
+    csv_writer  = csv.writer(contacts_csv)        # csv.writer class is used to insert the data into csv file. User’s data is converted into a delimited string by the writer object returned by csv.writer()
+
+    for row in all_contactcs:
+        csv_writer.writerow(row)                  # writerow() method is used to write single row of data to csv file. 
+    
+    response = StreamingResponse(contacts_csv, media_type="applicaton/octet-stream")    #applicaton/octet-stream 
+    response.headers["Content disposition"] = "attachment; filename=contacts.csv"
+
+    return response
+    
+    
+

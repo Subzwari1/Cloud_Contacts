@@ -19,7 +19,6 @@ import { CreateContactComponent } from './contact/create-contact/create-contact.
 import { InputTextModule } from 'primeng/inputtext';
 import { InputMaskModule } from 'primeng/inputmask';
 import { RegistrationComponent } from './registration/registration.component';
-import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
 import { ViewContactComponent } from './contact/view-contact/view-contact.component';
 import { EditContactComponent } from './contact/edit-contact/edit-contact.component';
 import { QrcodeDirectoryComponent } from './Tables/qrcode-directory/qrcode-directory.component';
@@ -38,7 +37,6 @@ import { FileUploadModule } from 'primeng/fileupload';
     LoginComponent,
     ContactsDirectoryComponent,
     CreateContactComponent,
-    TrashDirectoryComponent,
     RegistrationComponent,
     ViewContactComponent,
     EditContactComponent,
