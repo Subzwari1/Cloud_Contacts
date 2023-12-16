@@ -172,7 +172,7 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
   
 
 @router.get("/download-contacts", tags=['downlaod contacts'])
-async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+async def download_contacts(db: Session = Depends(get_db), request = Request):
 
     cursor = db.execute("SELECT * from Contact")
     all_contactcs = cursor.fetchall()
