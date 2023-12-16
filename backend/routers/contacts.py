@@ -36,6 +36,7 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
                    phone_number3=contact.phone_number3,
                    phone_type3=contact.phone_type3,                 
                    email=contact.email,
+                   relationship=contact.relationship,
                    user_id=contact.user_id)
    db.add(contact)
    db.commit()
@@ -108,6 +109,7 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     contact.phone_type2=contact_update.phone_type2
     contact.phone_number3=contact_update.phone_number3
     contact.phone_type3=contact_update.phone_type3
+    contact.relationship=contact_update.relationship
     contact.email=contact_update.email
     db.commit()
     db.refresh(contact)
@@ -156,6 +158,7 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
             phone_number3=contact.phone_number3,
             image_path=contact.image_path,
             phone_type3=contact.phone_type3,
+            relationship=contact.relationship,
             is_shared=True
         )
             db.add(new_contact)
@@ -170,7 +173,7 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
   
 
 @router.get("/download-contacts", tags=['downlaod contacts'])
-async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+async def download_contacts(db: Session = Depends(get_db), request = Request):
 
     cursor = db.execute("SELECT * from Contact")
     all_contactcs = cursor.fetchall()
