@@ -71,32 +71,6 @@
 
     
          <div  class="row">
-            <div class="p-field">
-                <label for="phoneNumber">Phone Number</label>
-                <div class="p-inputgroup" >
-                  <span class="p-inputgroup-addon">
-                    <i class="pi pi-phone"></i>
-                  </span>
-                  <input 
-                  [pattern]="phoneNumberPattern" 
-                  pInputText placeholder="Phone Number" 
-                  [(ngModel)]="contact.phone_number"
-                   name="phoneNumber" required>
-                </div>
-                <p-message 
-                *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].errors?.['required']"
-                     severity="error"
-                     [style]="{'width':'490px','margin-top': '20px', 'display': 'inline-block'}"
-                     text="Phone number is required">
-                </p-message>
-
-                <p-message *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].hasError('pattern')"
-                severity="error"
-                [style]="{'width':'480px','margin-top': '20px', 'display': 'block'}"
-                text="Invalid phone number format. It should be 10 digits.">
-                </p-message>
-              </div>
-              
               <div class="p-field">
                 <label for="email">Email</label>
                 <div class="p-inputgroup">
@@ -120,8 +94,59 @@
                 </p-message>
                
               </div>
+              <div class="p-field">
+                <label for="email">Relationship</label>
+                <p-dropdown [style]="{ 'margin-left': '5px','margin-top': '9px', 'width': '490px'}"
+                [options]="relationships" 
+                [(ngModel)]="contact.relationship" 
+                [showClear]="true" placeholder="Select a relationship"
+                name="relationship"
+                id="relationship"
+                ></p-dropdown>
+        
+              </div>
 
          </div> 
+         <div class="row">
+          <div class="p-field">
+            <label for="phoneNumber">Phone Number</label>
+            <div class="p-inputgroup" >
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+              </span>
+              <input 
+              [pattern]="phoneNumberPattern" 
+              pInputText placeholder="Phone Number" 
+              [(ngModel)]="contact.phone_number"
+               name="phoneNumber" required>
+            </div>
+            <p-message 
+            *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].errors?.['required']"
+                 severity="error"
+                 [style]="{'width':'490px','margin-top': '20px', 'display': 'inline-block'}"
+                 text="Phone number is required">
+            </p-message>
+  
+            <p-message *ngIf="contactForm.controls['phoneNumber']?.touched && contactForm.controls['phoneNumber'].hasError('pattern')"
+            severity="error"
+            [style]="{'width':'480px','margin-top': '20px', 'display': 'block'}"
+            text="Invalid phone number format. It should be 10 digits.">
+            </p-message>
+          </div>
+          <div class="p-field">
+            <label >Phone Type</label>
+            <p-dropdown [style]="{ 'margin-left': '5px','margin-top': '9px', 'width': '490px'}"
+            [options]="labels" 
+            [(ngModel)]="contact.phone_type" 
+            [showClear]="true" 
+            name="phoneType"
+            id="phoneType"
+            placeholder="Select a phone type"></p-dropdown>
+    
+          </div>
+
+         </div>
+        
          <div *ngFor="let phoneNumber of phoneNumbers; let i = index;trackBy: trackByFn">
           <div class="row" >
             <div class="p-field">
@@ -137,29 +162,42 @@
                         #phoneInput="ngModel"
                         required
                         name="phoneNumbers{{ i }}"
-                        id="phoneNumbers{{ i }}">
-                <i class="pi pi-times" 
-                   (click)="deletePhoneNumber(i)"
+                        id="phoneNumbers{{ i }}"
+                        >
+                </div>
+                      <p-message
+                      *ngIf="phoneInput.touched && phoneInput.hasError('required')"
+                      severity="error"
+                      [style]="{ 'width': '490px', 'margin-top': '20px', 'display': 'inline-block' }"
+                      text="Phone number is required"
+                    ></p-message>
+              
+                    <p-message
+                      *ngIf="phoneInput.touched && phoneInput.hasError('pattern')"
+                      severity="error"
+                      [style]="{ 'width': '480px', 'margin-top': '20px', 'display': 'block' }"
+                      text="Invalid phone number format. It should be 10 digits."
+                    ></p-message>
+            </div>
+              <div class="p-field" style="margin-right: -25px;">
+                  <label >Phone Type</label>
+                  <p-dropdown [style]="{  'width': '440px','margin-left': '9px','margin-top': '9px'}"
+                  [options]="labels" 
+                  [(ngModel)]="phoneTypes[i]" 
+                  name="phoneTypes{{ i }}"
+                  id="phoneTypes{{ i }}"
+                  [showClear]="true"
+                   placeholder="Select a phone type"></p-dropdown>
+               </div>
 
-                   style=" cursor: pointer;font-size: 2.8rem; margin-left:5px; color:red;text-align: center;"></i>
-              </div>
-          
-              <p-message
-              *ngIf="phoneInput.touched && phoneInput.hasError('required')"
-              severity="error"
-              [style]="{ 'width': '490px', 'margin-top': '20px', 'display': 'inline-block' }"
-              text="Phone number is required"
-            ></p-message>
-      
-            <p-message
-              *ngIf="phoneInput.touched && phoneInput.hasError('pattern')"
-              severity="error"
-              [style]="{ 'width': '480px', 'margin-top': '20px', 'display': 'block' }"
-              text="Invalid phone number format. It should be 10 digits."
-            ></p-message>
+              
+                <i class="pi pi-times" 
+                (click)="deletePhoneNumber(i)"
+
+                style=" cursor: pointer;font-size: 2.8rem; margin-top:35px; color:red;">
+               </i>
             </div>
           </div>
-         </div>
          
          <div class="row">
           <p-button label="Add Phone"

@@ -10,5 +10,10 @@ export interface Contact{
     visible?:boolean
     is_shared?:boolean
     image_path?:string
+    phone_type?: string
+    phone_type2?: string
+    phone_type3?: string
+    relationship?:string
+
 
   }

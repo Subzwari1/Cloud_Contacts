@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { FilterMetadata } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { BehaviorSubject } from 'rxjs';
 import { Contact } from 'src/app/Dtos/Contact';
@@ -19,20 +20,41 @@ export class ContactsDirectoryComponent {
   isShareDialogOpen: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   contactName:string=""
   contactId?:number;
+  relationships:string[]=[]
   constructor(private contactsService:ContactService,
               private authService:AuthService,
               private router: Router) { }
 
   ngOnInit() {
-    
+    this.relationships= this.contactsService.getRelationShipTypes();
+    this.relationships.push('None')
     this.getContacts();
+  }
+  filterRelationship(value: any, filter: FilterMetadata): boolean {
+    if (filter.value === undefined || filter.value === null) {
+      return true;
+    }
+  
+    return value === filter.value;
   }
   getContacts()
   {
     const id = this.authService.getLoginInfo();
     if (id)
     this.contactsService.getContacts(parseInt(id))
-    .subscribe(response=>{this.users=response; console.log(response)});
+    .subscribe(response=>{
+      this.users=response;
+      this.users[0].relationship="Family";
+      this.users[1].relationship="Coworker";
+      this.users[3].relationship="Friend";
+
+
+     this.users.forEach(user=>{
+      if (user.relationship===null||user.relationship===undefined)
+        user.relationship='None';
+      });
+    console.log(response)
+  });
   }
 
   clear(table: Table) {
@@ -83,4 +105,25 @@ export class ContactsDirectoryComponent {
     this.contactId=contact.id;
     this.isShareDialogOpen.next(true);
   }
+  getSeverity(relationshipType: string) {
+    switch (relationshipType) {
+        case 'None':
+            return 'danger';
+
+        case 'Family':
+            return 'success';
+
+        case 'Coworker':
+            return 'info';
+
+        case 'School':
+            return 'warning';
+
+        case 'Friend':
+            return 'info';
+        
+
+    }
+    return undefined;
+}
 }

@@ -53,33 +53,51 @@
 
     
          <div  class="row">
-            <div class="p-field">
-                <label for="phoneNumber">Phone Number</label>
-                <div class="p-inputgroup" style=" border:  1px solid black;  border-radius: 7px;" >
-                  <span class="p-inputgroup-addon">
-                    <i class="pi pi-phone"></i>
-                  </span>
-                 <p style="margin-left: 5px;">{{contact.phone_number}}</p>
-                </div>
-                
+          <div class="p-field">
+            <label for="email">Email</label>
+            <div class="p-inputgroup" style=" border:  1px solid black;  border-radius: 7px;">
+              <span class="p-inputgroup-addon" >
+                <i class="pi pi-envelope"></i>
+              </span>
+              <!-- <input [disabled]="areInputsDisabled" id="email" placeholder="Email"  [email]="true"  type="email" pInputText [(ngModel)]="contact.email" name="email" required/>
+              -->
+              <p style="margin-left: 5px;">{{contact.email}}</p>
+            </div>
+           
+          </div>
 
+          <div class="p-field">
+            <label for="email">Relationship</label>
+            <div class="p-inputgroup"  style=" border:  1px solid black;  border-radius: 7px;min-height: 53px;">
+              <p style="margin-left: 16px;">{{contact.relationship}}</p>
+            </div> 
+            
+    
+          </div>
 
-              </div>
               
-              <div class="p-field">
-                <label for="email">Email</label>
-                <div class="p-inputgroup" style=" border:  1px solid black;  border-radius: 7px;">
-                  <span class="p-inputgroup-addon" >
-                    <i class="pi pi-envelope"></i>
-                  </span>
-                  <!-- <input [disabled]="areInputsDisabled" id="email" placeholder="Email"  [email]="true"  type="email" pInputText [(ngModel)]="contact.email" name="email" required/>
-                  -->
-                  <p style="margin-left: 5px;">{{contact.email}}</p>
-                </div>
-               
-              </div>
+             
 
          </div> 
+         <div class="row">
+          <div class="p-field">
+            <label for="phoneNumber">Phone Number</label>
+            <div class="p-inputgroup" style=" border:  1px solid black;  border-radius: 7px;" >
+              <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+              </span>
+             <p style="margin-left: 5px;">{{contact.phone_number}}</p>
+            </div>
+            
+          </div>
+          <div class="p-field">
+            <label for="phoneNumber">Phone Type</label>
+            <div class="p-inputgroup" style=" border:  1px solid black;border-radius: 7px; min-height: 53px;" >
+             <p style="margin-left: 16px;">{{contact.phone_type}}</p>
+            </div>
+          </div>
+          </div>
+            
          <div *ngFor="let phoneNumber of phoneNumbers; let i = index;">
           <div class="row" >
             <div class="p-field">
@@ -91,13 +109,19 @@
   
                         <p style="margin-left: 5px;;">{{phoneNumber}}</p>
               </div>
-          
+                      
+            </div>
+              <div class="p-field" style="margin-right: -25px;">
+                  <label >Phone Type</label>
+                  <div class="p-inputgroup"  style=" border:  1px solid black;  border-radius: 7px;min-height: 53px;">
+                    <p style="margin-left: 16px;">{{phoneTypes[i]}}</p>
+                  </div> 
+               </div>
 
-      
-
+              
+               
             </div>
           </div>
-         </div>
 
           
           

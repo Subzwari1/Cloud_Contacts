@@ -29,6 +29,10 @@
                     <span> {{ item.label }}</span>
                 </div >
             </a>
+            <div >
+              <span [class]="item.icon"></span>
+              <span> {{ item.label }}</span>
+            </div >
         </ng-template>
         </p-menu>
         <span class="icon-container" (click)="profileMenu.toggle($event)">
