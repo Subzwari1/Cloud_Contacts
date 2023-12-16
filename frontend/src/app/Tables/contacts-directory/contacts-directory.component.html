@@ -1,9 +1,10 @@
 <p-table  #dt1 [value]="users" 
-[tableStyle]="{ 'min-width': '50rem' }"
+[tableStyle]="{ 'min-width': '60rem' }"
 dataKey="id"
-[globalFilterFields]="['first_name', 'last_name','email','phone_number']"
+[globalFilterFields]="['first_name', 'last_name','email','phone_number','relationship']"
 
 >
+
 
 <ng-template pTemplate="caption">
     <div  style="display:flex;justify-content: space-between;">
@@ -19,8 +20,30 @@ dataKey="id"
          <th>First Name</th>
          <th>Last Name</th>
          <th>Email</th>
-         <th>Phone Number</th>
+         <th>Phone Number</th>  
+         <th>Relationship</th>
          <th>Actions</th>
+         
+     </tr>
+     <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th>
+            <p-columnFilter field="relationship" matchMode="equals" [showMenu]="false">
+                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                    <p-dropdown [ngModel]="value" [options]="relationships" (onChange)="filter($event.value)" placeholder="Any" [showClear]="true">
+                        <ng-template let-option pTemplate="item">
+                            <p-tag [value]="option" [severity]="getSeverity(option)"></p-tag>
+                        </ng-template>
+                    </p-dropdown>
+                </ng-template>
+            </p-columnFilter>
+        </th>
+        <th>
+       
+        </th>
      </tr>
  </ng-template>
  <ng-template pTemplate="body" let-user>
@@ -29,6 +52,7 @@ dataKey="id"
          <td>{{ user.last_name }}</td>
          <td>{{ user.email }}</td>
          <td>{{ user.phone_number}}</td>
+         <td>{{ user.relationship}}</td>
          <td>
 
             <i class="pi pi-eye actions" style="color: blue ;margin-right: 10px;" (click)="viewContact(user.id)"></i> 

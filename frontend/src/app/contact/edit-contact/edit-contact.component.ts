@@ -22,6 +22,9 @@ export class EditContactComponent {
   contactId:number=0;
   contact: Contact={ };
   phoneNumberPattern: string = '^[0-9]{10}$';
+  labels:string[]|undefined;
+  relationships:string[]|undefined;
+  phoneTypes:string[]=[]
 
   constructor(private route: ActivatedRoute,
     private auth:AuthService,
@@ -31,6 +34,8 @@ export class EditContactComponent {
     selectedFile:File|undefined;
   
   ngOnInit(): void {
+    this.labels= this.contactService.getPhoneTypes();
+    this.relationships=this.contactService.getRelationShipTypes();
     this.route.params.subscribe(params => {
         this.contactId= params['id'];
         const userId=this.auth.getLoginInfo();
@@ -42,11 +47,15 @@ export class EditContactComponent {
         if (this.contact.phone_number2!=null)
         {
           this.phoneNumbers.push(this.contact.phone_number2)
+          if (this.contact.phone_type2)
+          this.phoneTypes.push(this.contact.phone_type2)
         }
 
         if (this.contact.phone_number3!=null)
         {
           this.phoneNumbers.push(this.contact.phone_number3)
+          if (this.contact.phone_type3)
+          this.phoneTypes.push(this.contact.phone_type3)
         }
         if (response.image_path && response.id)
         {
@@ -131,6 +140,8 @@ export class EditContactComponent {
     this.contact.user_id=parseInt(id)
     this.contact.phone_number2=this.phoneNumbers.length>0?this.phoneNumbers[0]:undefined
     this.contact.phone_number3=this.phoneNumbers.length>=1?this.phoneNumbers[1]:undefined
+    this.contact.phone_type2=this.phoneTypes.length>0?this.phoneTypes[0]:undefined
+    this.contact.phone_type3=this.phoneNumbers.length>1?this.phoneTypes[1]:undefined
     this.contactService.editContact(this.contactId,this.contact)
     .subscribe(response=>
      {

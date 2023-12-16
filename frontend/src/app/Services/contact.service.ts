@@ -62,4 +62,14 @@ export class ContactService {
     debugger;
     return this.http.put<string>(`http://localhost:8000/contacts/upload/profile/${contact_id}`,formData);
   }
+
+  getPhoneTypes() {
+    const phoneTypes: string[] = ["Mobile", "Home", "Work", "Other"];
+    return phoneTypes;
+  }
+  getRelationShipTypes() {
+    const relationships: string[] = ["Family", "Coworker", "School", "Friend","Partner"];
+
+    return relationships;
+  }
 }

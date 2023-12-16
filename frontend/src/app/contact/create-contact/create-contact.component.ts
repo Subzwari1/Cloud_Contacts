@@ -13,17 +13,25 @@ import Swal from 'sweetalert2';
   templateUrl: './create-contact.component.html',
   styleUrls: ['./create-contact.component.css']
 })
-export class CreateContactComponent  {
+export class CreateContactComponent implements OnInit  {
 
   @ViewChild('fileInput') fileInput!: any;
   contact: CreateContact={ };
   phoneNumbers:string[]=[]
+  phoneTypes:string[]=[]
   messages: Message[]=[];
   phoneNumberPattern: string = '^[0-9]{10}$';
   selectedFileUrl: string |undefined;
   selectedFile:File|undefined;
+  labels:string[]|undefined;
+  relationships:string[]|undefined;
   constructor(private contactService:ContactService,
     private auth:AuthService){}
+
+  ngOnInit(): void {
+    this.labels= this.contactService.getPhoneTypes();
+    this.relationships=this.contactService.getRelationShipTypes();
+  }
  
   
   
@@ -68,6 +76,7 @@ export class CreateContactComponent  {
       return;
     }
     this.phoneNumbers?.push('');
+    this.phoneTypes?.push('')
 
   }
   deletePhoneNumber(index:number)
@@ -75,6 +84,7 @@ export class CreateContactComponent  {
     if(index >= 0 && index < this.phoneNumbers.length) 
     {
       this.phoneNumbers.splice(index, 1);
+      this.phoneTypes.splice(index,1);
     }
   }
   validatePhoneNumbers(): boolean {
@@ -94,6 +104,8 @@ export class CreateContactComponent  {
     this.contact.user_id=parseInt(id)
     this.contact.phone_number2=this.phoneNumbers.length>0?this.phoneNumbers[0]:undefined
     this.contact.phone_number3=this.phoneNumbers.length>=1?this.phoneNumbers[1]:undefined
+    this.contact.phone_type2=this.phoneTypes.length>0?this.phoneTypes[0]:undefined
+    this.contact.phone_type3=this.phoneNumbers.length>1?this.phoneTypes[1]:undefined
     this.contactService.addContact(this.contact)
     .subscribe(response=>
      {

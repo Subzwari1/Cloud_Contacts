@@ -6,7 +6,7 @@ import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { FilterService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -29,7 +29,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ShareContactsComponent } from './dialogs/share-contacts/share-contacts.component';
 import { FileUploadModule } from 'primeng/fileupload';
 import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
-
+import { ChipsModule } from 'primeng/chips';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -63,9 +64,11 @@ import { TrashDirectoryComponent } from './Tables/trash-directory/trash-director
     DialogModule,
     DropdownModule,
     RadioButtonModule,
-    FileUploadModule
+    FileUploadModule,
+    TagModule
+    
   ],
-  providers: [MessageService],
+  providers: [MessageService,FilterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

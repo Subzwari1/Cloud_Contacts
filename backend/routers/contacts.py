@@ -156,6 +156,7 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
             phone_number2=contact.phone_number2,
             phone_type2=contact.phone_type2,
             phone_number3=contact.phone_number3,
+            image_path=contact.image_path,
             phone_type3=contact.phone_type3,
             relationship=contact.relationship,
             is_shared=True

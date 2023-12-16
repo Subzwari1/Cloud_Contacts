@@ -27,7 +27,9 @@ export class AuthService {
       setLoginInfo(id:number)
       {
         localStorage.setItem("user",id.toString());
+      //  localStorage.setItem("userName",username);
       }
+     
       
       isLoggedIn():boolean {
         const response=this.getLoginInfo();
