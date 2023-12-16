@@ -106,7 +106,7 @@ async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session
 
 
 @router.get("/download-contacts", tags=['downlaod contacts'])
-async def import_contacts(user_id: int, db: Session = Depends(get_db), request = Request):
+async def download_contacts(db: Session = Depends(get_db), request = Request):
 
     cursor = db.execute("SELECT * from Contact")
     all_contactcs = cursor.fetchall()
