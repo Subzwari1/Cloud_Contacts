@@ -1,12 +1,12 @@
 import os
 import secrets
 from fastapi import APIRouter, Depends, status, HTTPException, File, UploadFile
+import qrcode
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
 from data.models import Contact
 from data.database import SessionLocal
-import qrcode
 import io
 import base64
 from sqlalchemy.orm import make_transient
@@ -30,8 +30,11 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
    contact=Contact(first_name=contact.first_name,
                    last_name=contact.last_name,
                    phone_number=contact.phone_number,
+                   phone_type=contact.phone_type,
                    phone_number2=contact.phone_number2,
+                   phone_type2=contact.phone_type2,
                    phone_number3=contact.phone_number3,
+                   phone_type3=contact.phone_type3,                 
                    email=contact.email,
                    user_id=contact.user_id)
    db.add(contact)
@@ -100,8 +103,11 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     contact.first_name=contact_update.first_name
     contact.last_name=contact_update.last_name
     contact.phone_number=contact_update.phone_number
+    contact.phone_type=contact_update.phone_type
     contact.phone_number2=contact_update.phone_number2
+    contact.phone_type2=contact_update.phone_type2
     contact.phone_number3=contact_update.phone_number3
+    contact.phone_type3=contact_update.phone_type3
     contact.email=contact_update.email
     db.commit()
     db.refresh(contact)
@@ -144,8 +150,11 @@ async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depend
             last_name=contact.last_name,
             email=contact.email,
             phone_number=contact.phone_number,
+            phone_type=contact.phone_type,
             phone_number2=contact.phone_number2,
+            phone_type2=contact.phone_type2,
             phone_number3=contact.phone_number3,
+            phone_type3=contact.phone_type3,
             is_shared=True
         )
             db.add(new_contact)
