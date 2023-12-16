@@ -6,12 +6,19 @@
   </i>
     <div class="image-container">
         <div>
-            <img class="LrbNhc tUOMob"
+            <!-- <img class="LrbNhc tUOMob"
         src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
         alt="Contact photo"
         width="125"
         height="125"
-        >
+        > -->
+        <img
+        [src]="selectedFileUrl ? selectedFileUrl : 'https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png'"
+          alt="Preview"
+          width="125"
+          height="125"
+          style="border-radius: 205px;"
+        />
         </div>
     </div>
     <form style="margin-left: 0px;" #contactForm="ngForm">

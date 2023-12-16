@@ -6,12 +6,29 @@
    </i>
     <div class="image-container">
         <div>
-            <img class="LrbNhc tUOMob"
+            <!-- <img class="LrbNhc tUOMob"
         src="https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png"
         alt="Contact photo"
         width="125"
         height="125"
-        >
+        > -->
+        <img
+        [src]="selectedFileUrl ? selectedFileUrl : 'https://www.gstatic.com/identity/boq/profilepicturepicker/photo_silhouette_e02a5f5deb3ffc173119a01bc9575490.png'"
+          alt="Preview"
+          width="125"
+          height="125"
+          style="border-radius: 205px;"
+          (click)="choose(fileInput)"
+        />
+
+        <p-button
+        *ngIf="!selectedFileUrl"
+        type="button"
+        icon="pi pi-plus"
+        [rounded]="true"
+        (onClick)="choose(fileInput)"
+        [style]="{  'margin-left': '-45px' }"
+      ></p-button>
         </div>
         <button type="button" style="margin-left:82%" pButton icon="pi pi-save" label="Edit contact" (click)="addContact(contactForm)"></button>
     </div>
@@ -164,4 +181,4 @@
     </form>
     <p-messages [value]="messages" [style]="{'font-size':'12px'}"></p-messages>
   </div>
-  
+  <input type="file" id="myfile" name="myfile" hidden #fileInput  (change)="handleFileSelection($event)">

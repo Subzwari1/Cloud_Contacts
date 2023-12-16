@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Contact } from '../../Dtos/Contact';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Message } from 'primeng/api';
@@ -15,10 +15,13 @@ import Swal from 'sweetalert2';
 })
 export class CreateContactComponent  {
 
+  @ViewChild('fileInput') fileInput!: any;
   contact: CreateContact={ };
   phoneNumbers:string[]=[]
   messages: Message[]=[];
   phoneNumberPattern: string = '^[0-9]{10}$';
+  selectedFileUrl: string |undefined;
+  selectedFile:File|undefined;
   constructor(private contactService:ContactService,
     private auth:AuthService){}
  
@@ -26,6 +29,31 @@ export class CreateContactComponent  {
   
   trackByFn(index:number, item:string) {
     return index;  
+  }
+
+  choose(fileInput:HTMLInputElement)
+  {
+    fileInput.click()
+  }
+  handleFileSelection(event: any): void {
+    console.log("hi ",event)
+    const file = event.target.files && event.target.files[0];
+    console.log("hi ",event)
+    console.log("handileFile ",file)
+    if (file) {
+      this.previewSelectedFile(file);
+    }
+  }
+
+  previewSelectedFile(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      
+      this.selectedFileUrl = e.target?.result as string;
+      console.log(this.selectedFileUrl)
+    };
+    this.selectedFile=file;
+    reader.readAsDataURL(file);
   }
 
   addPhoneNumber() {
@@ -69,9 +97,26 @@ export class CreateContactComponent  {
     this.contactService.addContact(this.contact)
     .subscribe(response=>
      {
-      this.messages = [{ severity: 'success', summary: 'Contact added'}]; 
-       contactForm.resetForm();
-       this.phoneNumbers.splice(0,this.phoneNumbers.length)
+      if (this.selectedFile!=undefined && response.id  )
+      {
+        this.contactService.saveContactPicture(response.id,this.selectedFile)
+        .subscribe(response=>{
+          this.messages = [{ severity: 'success', summary: 'Contact added'}]; 
+          contactForm.resetForm();
+          this.phoneNumbers.splice(0,this.phoneNumbers.length)
+          this.selectedFile=undefined;
+          this.selectedFileUrl=undefined;
+        })
+      }
+      else
+      {
+        this.messages = [{ severity: 'success', summary: 'Contact added'}]; 
+        contactForm.resetForm();
+        this.phoneNumbers.splice(0,this.phoneNumbers.length);
+        this.selectedFile=undefined;
+          this.selectedFileUrl=undefined;
+      }
+      
      },(error: HttpErrorResponse) => {
        console.log(error);
      })

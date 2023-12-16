@@ -9,4 +9,6 @@ export interface Contact{
     user_id?:number
     visible?:boolean
     is_shared?:boolean
+    image_path?:string
+
   }
