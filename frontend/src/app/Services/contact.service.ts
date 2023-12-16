@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Contact } from '../Dtos/Contact';
 import { CreateContact } from '../Dtos/CreateContact';
-import { Photo } from '../Dtos/photo';
+import { Photo } from '../Dtos/Photo';
 
 @Injectable({
   providedIn: 'root'
