@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Contact } from '../Dtos/Contact';
 import { CreateContact } from '../Dtos/CreateContact';
+import { Photo } from '../Dtos/photo';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +13,11 @@ export class ContactService {
     private http: HttpClient
   ) {}
   addContact(contact:CreateContact) {
-    return this.http.post("http://localhost:8000/contacts",contact);
+    return this.http.post<Contact>("http://localhost:8000/contacts",contact);
   }
 
   editContact(contactId:number,contact:Contact) {
-    return this.http.put(`http://localhost:8000/contacts/edit/${contactId}`,contact);
+    return this.http.put<Contact>(`http://localhost:8000/contacts/edit/${contactId}`,contact);
   }
 
   getContactsByUserIdAndContactId(user_id:number,contact_id:number) {
@@ -47,9 +48,18 @@ export class ContactService {
   }
 
   shareContact(contact_id:number,contacts_ids:number[]) {
-    debugger
     const requestBody = { contacts: contacts_ids };
     console.log("ids ", contacts_ids)
     return this.http.post<string>(`http://localhost:8000/contacts/share/${contact_id}`,contacts_ids);
+  }
+  getContactPicture(contact_id:number) {
+
+    return this.http.get<Photo>(`http://localhost:8000/contacts/profile/photo/${contact_id}`);
+  }
+  saveContactPicture(contact_id:number,file:File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    debugger;
+    return this.http.put<string>(`http://localhost:8000/contacts/upload/profile/${contact_id}`,formData);
   }
 }

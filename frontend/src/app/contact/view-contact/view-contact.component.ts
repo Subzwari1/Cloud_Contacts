@@ -10,6 +10,7 @@ import { ContactService } from '../../Services/contact.service';
   styleUrls: ['./view-contact.component.css']
 })
 export class ViewContactComponent implements OnInit {
+  selectedFileUrl: string|undefined;
 
   constructor(private route: ActivatedRoute,
               private auth:AuthService,
@@ -37,6 +38,13 @@ export class ViewContactComponent implements OnInit {
         if (this.contact.phone_number3!=null)
         {
           this.phoneNumbers.push(this.contact.phone_number3)
+        }
+
+        if (response.image_path && response.id)
+        {
+          this.contactService.getContactPicture(response.id).subscribe(photo=>{
+            this.selectedFileUrl=`data:image/${photo.extension};base64,${photo.image}`;
+          });
         }
       })
     });

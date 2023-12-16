@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+import os
+import secrets
+from fastapi import APIRouter, Depends, status, HTTPException, File, UploadFile
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
@@ -174,6 +176,50 @@ async def import_contacts(user_id: int, db: Session = Depends(get_db), request =
     response.headers["Content disposition"] = "attachment; filename=contacts.csv"
 
     return response
+
+@router.get("/profile/photo/{contact_id}",tags=['Contacts'])
+async def get_profile_photo(contact_id,db: Session = Depends(get_db)):
+    print("ID ",contact_id)
+    contact= db.query(Contact).filter(Contact.id==contact_id,Contact.active==True).first()
+    file_path=contact.image_path
+    _, extension = os.path.splitext(file_path)
+    with open(file_path, "rb") as file:
+        binary_data=file.read()
+        image=base64.b64encode(binary_data).decode('utf-8')
+        return {"image": image, "extension": extension[1:]}  
+
+
+
+@router.put("/upload/profile/{contactId}")
+async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
+    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
+    print("file... ",file)
+    filepath="./profile/images/"
+    file_name=file.filename
+    # extension=file_name.split(".")[1]
+    _, extension = os.path.splitext(file_name)
+    
+    extension = extension[1:]
+    print("extension: ",extension)
+
+    if extension not in  ["jpg", "png", "jpeg"]:
+        return {"status": "error", "detail": "file extension not allowed"}
+    global_token_name=secrets.token_hex(10)+"."+extension
+    generated_name=filepath+global_token_name
+    print("FILEPATH: ",filepath)
+    print("NAME: ",generated_name)
+    file_content = await file.read()
+    with open(generated_name, "wb") as file:
+        file.write(file_content)
+    file.close()
+    contact.image_path=generated_name
+    db.commit()
+    db.refresh(contact)
+    db.close()
+    return "successfuly uploaded"
+
+
+
     
     
 
