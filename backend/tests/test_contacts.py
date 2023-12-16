@@ -282,34 +282,49 @@ def test_hard_delete_successfully(mock_db_session):
     }
 
 def test_update_contact(mock_db_session: MagicMock):
-     
-    contact= Contact(first_name= "Giovanni",
-             last_name="Rossi",
-             email="giovanni@gmail.com",
-             phone_number="1234567890" ,
-             phone_number2=None,
-             phone_number3=None ,
-             user_id=1)
-    update_contact={"first_name":"Getachew",
-             "last_name":"Ross",
-             "email":"getachew@gmail.com",
-             "phone_number":"0123456789" ,
-             "phone_number2":"0123456788" ,
-             "phone_number3":"0123456787" ,
-             "user_id":1
-             }
+        
+    contact = Contact(
+        first_name="Giovanni",
+        last_name="Rossi",
+        email="giovanni@gmail.com",
+        phone_number="1234567890",
+        phone_type=None,
+        phone_number2=None,
+        phone_type2=None,
+        phone_number3=None,
+        phone_type3=None,
+        user_id=1
+    )
+    
+    update_contact = {
+        "first_name": "Getachew",
+        "last_name": "Ross",
+        "email": "getachew@gmail.com",
+        "phone_number": "0123456789",
+        "phone_type": "Mobile",
+        "phone_number2": "0123456788",
+        "phone_type2": "Work",
+        "phone_number3": "0123456787",
+        "phone_type3": "Home",
+        "user_id": 1
+    }
+    
     mock_query = mock_db_session
     mock_query.query.return_value.filter.return_value.first.return_value = contact
-    response = client.put("/contacts/edit/1",json=update_contact)
+    response = client.put("/contacts/edit/1", json=update_contact)
     assert response.status_code == 200
-    assert response.json()=={"first_name":"Getachew",
-             "last_name":"Ross",
-             "email":"getachew@gmail.com",
-             "phone_number":"0123456789" ,
-             "phone_number2":"0123456788" ,
-             "phone_number3":"0123456787" ,
-             "user_id":1
-             }
+    assert response.json() == {
+        "first_name": "Getachew",
+        "last_name": "Ross",
+        "email": "getachew@gmail.com",
+        "phone_number": "0123456789",
+        "phone_type": "Mobile",
+        "phone_number2": "0123456788",
+        "phone_type2": "Work",
+        "phone_number3": "0123456787",
+        "phone_type3": "Home",
+        "user_id": 1
+    }
 def test_update_contact_not_found(mock_db_session):
     mock_query = mock_db_session
     mock_query.query.return_value.filter.return_value.first.return_value = None
@@ -364,5 +379,103 @@ def test_create_whatsapp_barcode():
     )
     assert response.status_code == 200
 
+def test_update_contact_with_phone_type(mock_db_session: MagicMock):
+     
+    contact = Contact(
+        first_name="Giovanni",
+        last_name="Rossi",
+        email="giovanni@gmail.com",
+        phone_number="1234567890",
+        phone_type=None,
+        phone_number2=None,
+        phone_type2=None,
+        phone_number3=None,
+        phone_type3=None,
+        user_id=1
+    )
+    
+    update_contact = {
+        "first_name": "Getachew",
+        "last_name": "Ross",
+        "email": "getachew@gmail.com",
+        "phone_number": "0123456789",
+        "phone_type": "Mobile",
+        "phone_number2": "0123456788",
+        "phone_type2": "Work",
+        "phone_number3": "0123456787",
+        "phone_type3": "Home",
+        "user_id": 1
+    }
+    
+    mock_query = mock_db_session
+    mock_query.query.return_value.filter.return_value.first.return_value = contact
+    response = client.put("/contacts/edit/1", json=update_contact)
+    assert response.status_code == 200
+    assert response.json() == {
+        "first_name": "Getachew",
+        "last_name": "Ross",
+        "email": "getachew@gmail.com",
+        "phone_number": "0123456789",
+        "phone_type": "Mobile",
+        "phone_number2": "0123456788",
+        "phone_type2": "Work",
+        "phone_number3": "0123456787",
+        "phone_type3": "Home",
+        "user_id": 1
+    }
+
+def test_update_contact_with_phonetype_not_found(mock_db_session):
+    mock_query = mock_db_session
+    mock_query.query.return_value.filter.return_value.first.return_value = None
+    
+    update_contact = {
+        "first_name": "Getachew",
+        "last_name": "Ross",
+        "email": "getachew@gmail.com",
+        "phone_number": "0123456789",
+        "phone_type": "Mobile",
+        "user_id": 1
+    }
+    
+    response = client.put("/contacts/edit/1", json=update_contact)
+    assert response.status_code == 404
+    assert response.json() == {"detail": "Contact not found"}
+
+def test_get_contact_user_id_and_contact_id(mock_db_session):
+    mock_query = mock_db_session
+    mock_query = MagicMock()
+    mock_query.filter.return_value.first.return_value = {
+        "last_name": "Rossi",
+        "id": 68,
+        "phone_number": "1234567890",
+        "phone_type": None,
+        "email": "giovanni@gmail.com",
+        "user_id": 1,
+        "first_name": "Giovanni",
+        "phone_number2": None,
+        "phone_type2": None,
+        "phone_number3": None,
+        "phone_type3": None,
+        "active": True
+    }
+    
+    mock_db_session.query.return_value = mock_query
+
+    response = client.get("/contacts/1/68")
+    assert response.status_code == 200
+    assert response.json() == {
+        "last_name": "Rossi",
+        "id": 68,
+        "phone_number": "1234567890",
+        "phone_type": None,
+        "email": "giovanni@gmail.com",
+        "user_id": 1,
+        "first_name": "Giovanni",
+        "phone_number2": None,
+        "phone_type2": None,
+        "phone_number3": None,
+        "phone_type3": None,
+        "active": True
+    }
 
 
