@@ -31,6 +31,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
 import { ChipsModule } from 'primeng/chips';
 import { TagModule } from 'primeng/tag';
+import { ImportContactsComponent } from './dialogs/import-contacts/import-contacts.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import { TagModule } from 'primeng/tag';
     QrcodeDirectoryComponent,
     WhatsappBarcodeGeneratorComponent,
     ShareContactsComponent,
-    TrashDirectoryComponent
+    TrashDirectoryComponent,
+    ImportContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { TagModule } from 'primeng/tag';
     DropdownModule,
     RadioButtonModule,
     FileUploadModule,
-    TagModule
+    TagModule,
+    ProgressBarModule
     
   ],
   providers: [MessageService,FilterService],
