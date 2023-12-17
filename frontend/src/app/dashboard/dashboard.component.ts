@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem, PrimeIcons } from 'primeng/api';
 import { AuthService } from '../Services/auth.service';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Component({
@@ -12,7 +13,7 @@ export class DashboardComponent implements OnInit {
   title:string="Cloud Contacts";
   menuItems: MenuItem[]  | undefined;
   userProfile: MenuItem[]  | undefined;
-  
+  showImportContacts: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private auth:AuthService) { }
   logOut()
@@ -51,8 +52,23 @@ export class DashboardComponent implements OnInit {
         icon: PrimeIcons.WHATSAPP,
         routerLink: ['/dashboard/whatsapp']
       },
+      {
+        label: 'Import contacts',
+        icon: PrimeIcons.FILE_IMPORT,
+        command: () =>  this.clickImportContacts()
+        //routerLink: ['/dashboard/whatsapp']
+      },
   
     ];
   }
+  clickImportContacts()
+  {
+    console.log("hi");
+    this.showImportContacts.next(true)
+    console.log(this.showImportContacts)
+
+  }
+  
+ 
 
 }

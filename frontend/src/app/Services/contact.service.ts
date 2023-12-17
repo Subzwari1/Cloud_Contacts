@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Contact } from '../Dtos/Contact';
 import { CreateContact } from '../Dtos/CreateContact';
 import { Photo } from '../Dtos/Photo';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,6 @@ export class ContactService {
   saveContactPicture(contact_id:number,file:File) {
     const formData = new FormData();
     formData.append('file', file);
-    debugger;
     return this.http.put<string>(`http://localhost:8000/contacts/upload/profile/${contact_id}`,formData);
   }
 
@@ -71,5 +71,10 @@ export class ContactService {
     const relationships: string[] = ["Family", "Coworker", "School", "Friend","Partner"];
 
     return relationships;
+  }
+  uploadCSVFile(userId:number,file:File) :Observable<string>{
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<string>(`http://localhost:8000/contacts/upload/csv/${userId}`,formData);
   }
 }
