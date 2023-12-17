@@ -25,7 +25,8 @@ export class LoginComponent {
       this.auth.login(this.user)
       .subscribe(response=>{
         console.log(response);
-        this.auth.setLoginInfo(response);
+        if (this.user.username)
+        this.auth.setLoginInfo(response,this.user.username);
         this.router.navigate(['/dashboard']);
       },
       (error: HttpErrorResponse) => {

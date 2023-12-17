@@ -21,13 +21,14 @@ export class AuthService {
      }
       logout() {
         localStorage.removeItem("user");
+        localStorage.removeItem("username");
         this.router.navigate(['login']) ;
       }
 
-      setLoginInfo(id:number)
+      setLoginInfo(id:number,username:string)
       {
         localStorage.setItem("user",id.toString());
-      //  localStorage.setItem("userName",username);
+        localStorage.setItem("username",username);
       }
      
       
@@ -41,6 +42,9 @@ export class AuthService {
 
       getLoginInfo() {
         return localStorage.getItem("user") ;
+      }  
+      getUserName() {
+        return localStorage.getItem("username") ;
       }   
       registration(user: any): Observable<any> {
         return this.http.post<any>(`http://localhost:8000/users/register`, user);
