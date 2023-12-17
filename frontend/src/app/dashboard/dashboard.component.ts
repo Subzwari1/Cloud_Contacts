@@ -24,7 +24,12 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Log out',
         icon: PrimeIcons.SIGN_OUT
-      }]
+      },
+      {
+        label: `Username: ${this.auth.getUserName()} `,
+        icon: PrimeIcons.USER
+      }
+    ]
     this.menuItems = [
       {
         label: 'Create contact',
