@@ -1,6 +1,7 @@
 
+
 <p-table  #dt1 [value]="users" 
-[tableStyle]="{ 'min-width': '50rem' }"
+[tableStyle]="{ 'min-width': '78rem'}"
 dataKey="id"
 [globalFilterFields]="['first_name', 'last_name','email','phone_number']"
 
@@ -35,4 +36,9 @@ dataKey="id"
         </td>
      </tr>
  </ng-template>
+ <ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="5">No contacts.</td>
+    </tr>
+</ng-template>
 </p-table>

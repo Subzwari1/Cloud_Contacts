@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from dtos.user_base import UserBase, UserRegister
+from dtos.user_base import UserBase, UserRegister, UserResponse
 from data.models import User                 # importing Base class model (DB table) 
 from data.database import SessionLocal
 from validation import validate_user_registration
@@ -47,6 +47,14 @@ async def login(user:UserBase,db: Session = Depends(get_db)):
         return result.id
    else:
         raise HTTPException(status_code=401, detail="Username or password incorrect")
+
+@router.get("/{userId}")
+async def login(userId:int,db: Session = Depends(get_db)):
+   users= db.query(User).filter(User.id!=userId).all()
+   user_responses = [UserResponse(id=user.id, email=user.email, username=user.username) for user in users]
+   return user_responses 
+
+
    
 
     

@@ -6,7 +6,7 @@ import { MenuModule } from 'primeng/menu';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { FilterService, MessageService } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +26,13 @@ import { WhatsappBarcodeGeneratorComponent } from './dialogs/whatsapp-barcode-ge
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
-
+import { ShareContactsComponent } from './dialogs/share-contacts/share-contacts.component';
+import { FileUploadModule } from 'primeng/fileupload';
+import { TrashDirectoryComponent } from './Tables/trash-directory/trash-directory.component';
+import { ChipsModule } from 'primeng/chips';
+import { TagModule } from 'primeng/tag';
+import { ImportContactsComponent } from './dialogs/import-contacts/import-contacts.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -39,7 +45,10 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     ViewContactComponent,
     EditContactComponent,
     QrcodeDirectoryComponent,
-    WhatsappBarcodeGeneratorComponent
+    WhatsappBarcodeGeneratorComponent,
+    ShareContactsComponent,
+    TrashDirectoryComponent,
+    ImportContactsComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +66,13 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     InputMaskModule,
     DialogModule,
     DropdownModule,
-    RadioButtonModule
+    RadioButtonModule,
+    FileUploadModule,
+    TagModule,
+    ProgressBarModule
+    
   ],
-  providers: [MessageService],
+  providers: [MessageService,FilterService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,6 @@ from routers import contacts, users
 from data import models                #ye line add kari hey
 app = FastAPI()
 
-
 def create_db():
     Base.metadata.create_all(bind=engine)
 

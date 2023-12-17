@@ -1,11 +1,16 @@
-import codecs
-from fastapi import File
-from fastapi import APIRouter, Depends, UploadFile, status, HTTPException
+
+import os
+import secrets
+from fastapi import APIRouter, Depends, status, HTTPException, File, UploadFile
+import qrcode
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
 from data.models import Contact
 from data.database import SessionLocal
+import io
+import base64
+from sqlalchemy.orm import make_transient
 
 import csv
 from io import BytesIO
@@ -26,9 +31,13 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
    contact=Contact(first_name=contact.first_name,
                    last_name=contact.last_name,
                    phone_number=contact.phone_number,
+                   phone_type=contact.phone_type,
                    phone_number2=contact.phone_number2,
+                   phone_type2=contact.phone_type2,
                    phone_number3=contact.phone_number3,
+                   phone_type3=contact.phone_type3,                 
                    email=contact.email,
+                   relationship=contact.relationship,
                    user_id=contact.user_id)
    db.add(contact)
    db.commit()
@@ -39,7 +48,10 @@ async def post_contact(contact:ContactBase,db: Session = Depends(get_db)):
 @router.get("/{user_id}" ,tags=['Contacts'])
 async def get_contacts(user_id: int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.active==True).all()
+    print(user_id)
+    print(contacts)
     return contacts
+
 @router.get("/trash/{user_id}" ,tags=['Contacts'])
 async def get_contacts_intrash(user_id: int,db: Session = Depends(get_db)):
     contacts = db.query(Contact).filter(Contact.user_id == user_id, Contact.active==False).all()
@@ -93,8 +105,12 @@ def update_contact(id: int, contact_update: ContactBase,db: Session = Depends(ge
     contact.first_name=contact_update.first_name
     contact.last_name=contact_update.last_name
     contact.phone_number=contact_update.phone_number
+    contact.phone_type=contact_update.phone_type
     contact.phone_number2=contact_update.phone_number2
+    contact.phone_type2=contact_update.phone_type2
     contact.phone_number3=contact_update.phone_number3
+    contact.phone_type3=contact_update.phone_type3
+    contact.relationship=contact_update.relationship
     contact.email=contact_update.email
     db.commit()
     db.refresh(contact)
@@ -106,6 +122,56 @@ async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session
     contacts = db.query(Contact).filter(Contact.user_id == user_id,Contact.id==id,Contact.active==True).first()
     return contacts
 
+@router.post("/create/whatsapp/barcode" ,tags=['Contacts'])
+async def get_contacts_by_user_id_and_contact_id(phone_number:str,db: Session = Depends(get_db)):
+  if ('809' in phone_number):
+    phone_number= f"1{phone_number}"
+  else:
+    phone_number= f"39{phone_number}"
+  url= f"https://wa.me/{phone_number}"
+  data = url
+  img = qrcode.make(data)
+
+  img_byte_array = io.BytesIO()
+  img.save(img_byte_array, format='PNG')
+  img_byte_array = img_byte_array.getvalue()
+  base64_image = base64.b64encode(img_byte_array).decode('utf-8')
+  return base64_image
+
+@router.post("/share/{contact_id}" ,tags=['Contacts'])
+async def share_contact(user_ids: List[int],contact_id:int, db: Session = Depends(get_db)):
+  print("contact_id ",contact_id)
+  print("ids ",user_ids)
+  for user_id in user_ids:
+        contact = db.query(Contact).filter(Contact.id == contact_id).first()
+
+        if contact:
+            make_transient(contact)
+            new_contact = Contact(
+            user_id=user_id,
+            first_name=contact.first_name,
+            last_name=contact.last_name,
+            email=contact.email,
+            phone_number=contact.phone_number,
+            phone_type=contact.phone_type,
+            phone_number2=contact.phone_number2,
+            phone_type2=contact.phone_type2,
+            phone_number3=contact.phone_number3,
+            image_path=contact.image_path,
+            phone_type3=contact.phone_type3,
+            relationship=contact.relationship,
+            is_shared=True
+        )
+            db.add(new_contact)
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Contact with ID {user_id} not found",
+            )
+  db.commit()
+  db.close()
+  return "successfully shared!"
+  
 
 @router.get("/download-contacts", tags=['downlaod contacts'])
 def download_contacts(db: Session = Depends(get_db), request = Request):
@@ -124,6 +190,50 @@ def download_contacts(db: Session = Depends(get_db), request = Request):
     response.headers["Content disposition"] = "attachment; filename=contacts.csv"
 
     return response
+
+@router.get("/profile/photo/{contact_id}",tags=['Contacts'])
+async def get_profile_photo(contact_id,db: Session = Depends(get_db)):
+    print("ID ",contact_id)
+    contact= db.query(Contact).filter(Contact.id==contact_id,Contact.active==True).first()
+    file_path=contact.image_path
+    _, extension = os.path.splitext(file_path)
+    with open(file_path, "rb") as file:
+        binary_data=file.read()
+        image=base64.b64encode(binary_data).decode('utf-8')
+        return {"image": image, "extension": extension[1:]}  
+
+
+
+@router.put("/upload/profile/{contactId}")
+async def create_upload_profile(contactId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
+    contact= db.query(Contact).filter(Contact.id==contactId,Contact.active==True).first()
+    print("file... ",file)
+    filepath="./profile/images/"
+    file_name=file.filename
+    # extension=file_name.split(".")[1]
+    _, extension = os.path.splitext(file_name)
+    
+    extension = extension[1:]
+    print("extension: ",extension)
+
+    if extension not in  ["jpg", "png", "jpeg"]:
+        return {"status": "error", "detail": "file extension not allowed"}
+    global_token_name=secrets.token_hex(10)+"."+extension
+    generated_name=filepath+global_token_name
+    print("FILEPATH: ",filepath)
+    print("NAME: ",generated_name)
+    file_content = await file.read()
+    with open(generated_name, "wb") as file:
+        file.write(file_content)
+    file.close()
+    contact.image_path=generated_name
+    db.commit()
+    db.refresh(contact)
+    db.close()
+    return "successfuly uploaded"
+
+
+
     
 @router.post("/upload/csv/{userId}")
 def upload(userId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
