@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+import codecs
+from fastapi import File
+from fastapi import APIRouter, Depends, UploadFile, status, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from dtos.contact_base import ContactBase
@@ -106,7 +108,7 @@ async def get_contacts_by_user_id_and_contact_id(user_id: int,id:int,db: Session
 
 
 @router.get("/download-contacts", tags=['downlaod contacts'])
-async def download_contacts(db: Session = Depends(get_db), request = Request):
+def download_contacts(db: Session = Depends(get_db), request = Request):
 
     cursor = db.execute("SELECT * from Contact")
     all_contactcs = cursor.fetchall()
@@ -123,5 +125,25 @@ async def download_contacts(db: Session = Depends(get_db), request = Request):
 
     return response
     
+@router.post("/upload/csv/{userId}")
+def upload(userId:int,file: UploadFile = File(...),db: Session = Depends(get_db)):
+    csvReader = csv.DictReader(codecs.iterdecode(file.file, 'utf-8'))
+    for row in csvReader:
+        contact=Contact(first_name=row["first_name"],
+                   last_name=row["last_name"],
+                   phone_number=row["phone_number"],
+                   phone_type=row["phone_type"],
+                   phone_number2=row["phone_number2"],
+                   phone_type2=row["phone_type2"],
+                   phone_number3=row["phone_number3"],
+                   phone_type3=row["phone_type3"],                 
+                   email=row["email"],
+                   relationship=row["relationship"],
+                   user_id=userId)
+        db.add(contact)
+    file.file.close()
+    db.commit()
+    db.close
+    return "contacts uploaded successfully"
     
 
