@@ -1,4 +1,5 @@
 
+import codecs
 import os
 import secrets
 from fastapi import APIRouter, Depends, status, HTTPException, File, UploadFile
@@ -243,10 +244,10 @@ def upload(userId:int,file: UploadFile = File(...),db: Session = Depends(get_db)
                    last_name=row["last_name"],
                    phone_number=row["phone_number"],
                    phone_type=row["phone_type"],
-                   phone_number2=row["phone_number2"],
-                   phone_type2=row["phone_type2"],
-                   phone_number3=row["phone_number3"],
-                   phone_type3=row["phone_type3"],                 
+                   phone_number2=None if row["phone_number2"] == '' else row["phone_number2"],
+                   phone_type2=None if row["phone_type2"] == '' else row["phone_type2"],
+                   phone_number3=None if row["phone_number3"] == '' else row["phone_number3"],
+                   phone_type3=None if row["phone_type3"] == '' else row["phone_type3"],               
                    email=row["email"],
                    relationship=row["relationship"],
                    user_id=userId)
